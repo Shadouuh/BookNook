@@ -1,0 +1,193 @@
+.left-text {
+    width: 50%;
+    margin-top: 10vh;
+    padding: 30px;
+    z-index: 2;
+}
+.left-text h1{
+    font-size: 60px;
+    padding: 5px
+}
+.left-text h2{
+    padding: 2px;
+    font-size:24px;
+    border-radius: 20px;
+}
+.left-text button {
+    padding: 10px 20px;
+    background-color: transparent;
+    border: solid 1px black;
+    display: flex;
+    align-self: right;
+    margin: 25px;
+}
+.left-text button span {
+    font-size: 22px;
+}
+.start{
+    display: flex;
+    
+    
+}
+.start img{
+    
+    position: relative;
+    border-radius: 0px 0px 0px 80%;
+    right: 0;
+    width: 50%;
+    z-index: -2 !important;
+    
+}
+/* Estilos previos */
+.left-text {
+    width: 50%;
+    margin-top: 10vh;
+    padding: 30px;
+    z-index: 2;
+}
+
+.left-text h1{
+    font-size: 60px;
+    padding: 5px;
+    
+}
+#violet {
+    color:#657ED4;
+    font-size: 55px;
+}
+#violetSmall {
+    color:#657ED4;
+    font-size: 24px;
+}
+.left-text h2{
+    padding: 2px;
+    font-size:24px;
+    border-radius: 20px;
+}
+
+.left-text button {
+    padding: 10px 20px;
+    background-color: transparent;
+    border: solid 3px #657ED4;
+    display: flex;
+    align-self: right;
+    border-radius: 5px;
+    margin: 25px;
+    cursor: pointer;
+    color:  #657ED4;
+    transition: ease-in-out .2s;
+}
+.left-text button:hover {
+    background-color: #657ED4;
+    transform: scale(1.01);
+    color: white;
+}
+.left-text button:active {
+    background-color: #657ED4;
+    transform: scale(0.95);
+    color: white;
+}
+
+.left-text button span {
+    font-size: 22px;
+}
+
+.start {
+    display: flex;
+}
+#reverse{
+    flex-direction: row-reverse;
+}
+.start img {
+    position: relative;
+    border-radius: 0px 0px 0px 80%;
+    right: 0;
+    width: 50%;
+    z-index: -2 !important;
+}
+#reverse img {
+    border-radius: 0px 80% 80% 0px;
+}
+@media (max-width:768px) {
+    .left-text{
+        
+        width: 100%;
+        
+    }
+}
+/* Nuevos estilos para las secciones de género y productos */
+.genre-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin: 40px 20px;
+}
+
+.genre-section {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.genre-section h2 {
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.books-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 20px;
+    overflow: hidden;
+}
+
+.product-card {
+    width: 160px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 10px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.product-card:hover {
+    transform: scale(1.05);
+}
+
+.product-card img {
+    width: 100%;
+    border-radius: 8px;
+    height: 200px;
+    object-fit: cover;
+}
+
+.product-card-info {
+    padding-top: 10px;
+}
+
+.product-card-info h4 {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.product-card-info p {
+    font-size: 14px;
+    color: #555;
+    margin: 5px 0;
+}
+
+.price {
+    font-size: 16px;
+    color: #2ecc71;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
