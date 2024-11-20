@@ -6,6 +6,7 @@ import './index.css';
 import Nav from "./assets/Components/Nav";
 import Products from "./assets/Pages/Products";
 import Footer from "./assets/Components/Footer";
+import Test from "./assets/Components/Test";
 import Cart from "./assets/Pages/Cart";
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
         <Route path="/About" element={<About/>}/>
         <Route path="/Catalog" element={<Products/>}/>
         <Route path="Cart" element={<Cart/>}/>
+        <Route path="Test" element={<Test/>}/>
         </Routes>
       </main>
       <footer>
