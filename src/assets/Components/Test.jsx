@@ -1,46 +1,47 @@
 import { useState, useEffect } from "react";
 
 const Test = () => {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-    const fetchBooks = async () => {
-        try {
-            const response = await fetch('http://localhost:3000/api/libros');
-            if (!response.ok) throw new Error("Error en la respuesta del servidor");
-            const books = await response.json();
-            console.log(books);
-            setData(books.resultados);
-        } catch (error) {
-            setError(error.message);
-        } finally {
-            setLoading(false);
+    const data = {
+        "dates": {
+            "titulo": "libro falso",
+            "descripcion": "Como todo en la vida esto no es mas que una simple ilusion",
+            "clasificacion": "Todos",
+            "num_paginas": 111,
+            "precio": 2000,
+            "stock": 1,
+            "es_fisico": 0,
+            "año_publicacion": 2001,
+            "id_editorial": 1,
+            "id_autor": 1
         }
     };
 
+    const fetchTest = async () => {
+        try {
+            const response = await fetch('http://localhost:3000/api/libros', {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) throw new Error("Error en la respuesta del servidor");
+            else console.log("Se ingresó el libro");
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    };
+
+    let mounted = true;
     useEffect(() => {
-        fetchBooks();
+        if (mounted) fetchTest();
+        mounted = false;
     }, []);
 
     return (
         <div>
-            {loading ? (
-                <p>Cargando libros...</p>
-            ) : error ? (
-                <p>Error: {error}</p>
-            ) : data.length > 0 ? (
-                data.map(book => (
-                    <div key={book.id_libro}>
-                        <h2>{book.titulo}</h2>
-                        <p>{book.descripcion}</p>
-                        <p>Precio: ${book.precio}</p>
-                        <p>Stock: {book.stock}</p>
-                    </div>
-                ))
-            ) : (
-                <p>No hay libros disponibles.</p>
-            )}
+            <h2>Hola</h2>
         </div>
     );
 };
