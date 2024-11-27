@@ -8,6 +8,8 @@ import Products from "./assets/Pages/Products";
 import Footer from "./assets/Components/Footer";
 import Test from "./assets/Components/Test";
 import Cart from "./assets/Pages/Cart";
+import LoginUser from "./assets/Pages/loginUser";
+
 const App = () => {
   return (
     <Router>
@@ -22,6 +24,7 @@ const App = () => {
         <Route path="/Catalog" element={<Products/>}/>
         <Route path="Cart" element={<Cart/>}/>
         <Route path="Test" element={<Test/>}/>
+        <Route path="/LoginUser" element={<LoginUser/>}/>
         </Routes>
       </main>
       <footer>
