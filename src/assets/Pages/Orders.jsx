@@ -2,7 +2,7 @@ import "./Styles/Dash.css";
 import icon from "../Images/Svg/cart.svg";
 import { Link } from "react-router-dom";
 import StatCard from "../Components/StatCard";
-const Sales = () => {
+const Orders = () => {
   return (
     <>
       <div className="margin-p"></div>
@@ -26,7 +26,7 @@ const Sales = () => {
                 <hr />
               </div>
               <div className="center">
-                <h4>Ventas</h4>
+                <h4>Sales</h4>
               </div>
             </section>
           </Link>
@@ -37,7 +37,7 @@ const Sales = () => {
                 <hr />
               </div>
               <div className="center">
-                <h4>Empleados</h4>
+                <h4>Employees</h4>
               </div>
             </section>
           </Link>
@@ -54,53 +54,59 @@ const Sales = () => {
           </Link>
         </div>
         <div className="dash-main">
-          
+        <div className="stats-container">
+            <StatCard atributo={"Pendientes"} valor={"31"} />
+            <StatCard atributo={"Realizados del Mes"} valor={"124"} />
+            <StatCard atributo={"Mayor N° Pedidos"} valor={"Thiago Gonzalez"} />
+          </div>
           <div className="table-container">
-          <h1>Ventas</h1>
+            <h1>Orders</h1>
+            
             <div className="table">
               <table>
                 <thead>
                   <tr>
-                    <th>Empleado</th>
-                    <th>Libro</th>
-                    <th>Fecha</th>
-                    <th>Cantidad</th>
-                    <th>Precio Total</th>
+                    <th>Product Name</th>
+                    <th>Purchase Date</th>
+                    <th>Estimated Delivery Date</th>
+                    <th>Shipping Cost</th>
+                    <th>Shipping Address</th>
+                    <th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td>Juan Pérez</td>
-                    <td>Harry Potter y la Piedra Filosofal</td>
-                    <td>2024-11-20</td>
-                    <td>3</td>
-                    <td>$45.00</td>
+                    <td>Harry Potter Book</td>
+                    <td>2024-11-25</td>
+                    <td>2024-12-05</td>
+                    <td>$10.00</td>
+                    <td>123 Magic St., Wizard City</td>
+                    <td>In Transit</td>
                   </tr>
                   <tr>
-                    <td>María López</td>
-                    <td>El Señor de los Anillos</td>
+                    <td>Bubble Tea Mug</td>
                     <td>2024-11-22</td>
-                    <td>2</td>
-                    <td>$30.00</td>
+                    <td>2024-11-29</td>
+                    <td>$5.00</td>
+                    <td>456 Tea Rd., Tea Town</td>
+                    <td>Pending</td>
                   </tr>
                   <tr>
-                    <td>Carlos García</td>
-                    <td>El Hobbit</td>
-                    <td>2024-11-23</td>
-                    <td>1</td>
-                    <td>$15.00</td>
+                    <td>Fantasy Map Poster</td>
+                    <td>2024-11-20</td>
+                    <td>2024-11-27</td>
+                    <td>$7.00</td>
+                    <td>789 Fantasy Ln., Dreamland</td>
+                    <td>Delivered</td>
                   </tr>
                 </tbody>
               </table>
             </div>
-          </div>
-          <div className="stats-container">
-            <StatCard atributo={"Ventas anuales"} valor={"321"} />
-            <StatCard atributo={"Ganancias Totales:"} valor={"$5.000.230"} />
           </div>
         </div>
       </div>
     </>
   );
 };
-export default Sales;
+
+export default Orders;

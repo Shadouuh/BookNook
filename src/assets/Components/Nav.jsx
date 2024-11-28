@@ -6,7 +6,7 @@ import cartIcon from "../Images/Svg/cart.svg";
 import userIcon from "../Images/Svg/user.svg";
 import logoIcon from "../Images/Svg/logo.svg";
 import { useEffect, useState } from "react";
-
+import exitIcon from "../Images/Svg/Exit.svg";
 const Nav = () => {
   const [menu, toggleMenu] = useState(false);
   const [showNav, setShowNav] = useState(true);
@@ -69,11 +69,48 @@ const Nav = () => {
       <div
         className={menu ? "back" : "back-disable"}
         onClick={() => toggleMenu(!menu)}
-      >
+      ></div>
         <div className={menu ? "side-menu" : "side-menu-disable"}>
-          <h1>hola</h1>
+          <div className="close">
+          <img src={exitIcon} alt="Cerrar" className="exit-icon" onClick={() => toggleMenu(!menu)}/>
+          </div>
+          <div className="options">
+            <Link to="/Login">
+            <section>
+              <div className="min-sex">
+                <img src={exitIcon} alt="" />
+                <hr />
+              </div>
+              <div className="center">
+                <h4>Inicia sesion!</h4>
+              </div>
+            </section>
+            </Link>
+          <Link to="/Admin/Dashboard">
+            <section>
+              <div className="min-sex">
+                <img src={exitIcon} alt="" />
+                <hr />
+              </div>
+              <div className="center">
+                <h4>Administracion
+                </h4>
+              </div>
+            </section>
+            </Link>
+            <h4>Cambiar Idioma</h4>
+            <section>
+              <div className="min-sex">
+                <img src={exitIcon} alt="" />
+                <hr />
+              </div>
+              <div className="center">
+                <h4>Español</h4>
+              </div>
+            </section>
+          </div>
         </div>
-      </div>
+      
     </>
   );
 };

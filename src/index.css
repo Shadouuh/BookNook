@@ -68,6 +68,9 @@ box-shadow: 0 0 4px 2px #657ED4;
 outline: none;
 }
 .margin{
+  height: 15vh;
+}
+.margin-p{
   height: 10vh;
 }
 .error{
@@ -79,4 +82,9 @@ outline: none;
   position: relative;
   z-index: -2;
   border-radius: 50% 50% 0px 0px ;
+}
+@media (max-width: 940px) {
+  .margin{
+    height: 25vh;
+  }
 }

@@ -7,6 +7,7 @@
     border-radius: 50px;
     overflow: hidden;
     transition: 0.3s ease-in-out;
+    margin-bottom: 1vh;
   }
   .loginForm hr {
     border: none;
@@ -58,7 +59,15 @@
   .changeForm:hover {
     background-color: #1c1c1c;
   }
-  
+  @media (max-width: 940px) {
+    .changeForm{
+      display: none;
+    }
+    .loginForm{
+      width: 100%;
+      box-shadow: 0 0px 10px 10px rgba(0, 0, 0, 0.65);
+    }
+  }
   .changeForm button, .button {
     background-color: #ffafcc;
     border: none;

@@ -6,27 +6,29 @@
 }
 .sidebar{
     min-width: 200px;
-    width: 20%;
-    border: solid 1px black;
-}
-.sidebar section{
-    display: flex;
+    width: 15%;
+    border-right: solid 1px black;
     box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.65);
+    z-index: 3;
+}
+ section{
+    cursor: pointer;
+    display: flex;
+    box-shadow: 0px 0px 3px 2px rgba(0,0,0,0.65);
     padding: 10px;
     border-radius: 10px;
-    border: solid black 1px;
     margin: 10px;
     height: 40px;
     align-items: center;
     justify-content: space-between;
     transition: ease-in-out .2s;
 }
-.sidebar section:hover {
+ section:hover {
     color: white;
     background-color: black;
     transform:scale(1.02);
 }
-.sidebar section:active {
+ section:active {
     transform:scale(1);
 }
 a{
@@ -38,15 +40,11 @@ a{
     align-items: center;
     gap: 0px 20%;
 }
-.sidebar section hr{
+ section hr{
     height: 20px;
-    border: solid 1px rgba(0, 0, 0, 0.894);
 }
-.sidebar section img{
+ section img{
     height: 5vh;
-}
-.size-6{
-    color: blue;
 }
 .center{
     display: flex;
@@ -62,6 +60,10 @@ a{
     flex-direction: column;
     align-items: flex-start;
 }
+.dash-main h1{
+    text-align: center;
+    margin: 10px 0px;
+}
 .stats-container{
     display: flex;
     width: 100%;
@@ -71,3 +73,53 @@ a{
     padding: 10px;
     flex-wrap: wrap;
 }
+/* Table */
+.table-container{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    padding: 30px 0px;
+
+}
+.table {
+    width: 80%;
+    max-width: 800px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.65);
+    display: flex;
+    align-self: center;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  thead {
+    background-color: #000;
+    color: #fff;
+  }
+  
+  th, td {
+    text-align: center;
+    padding: 12px;
+    margin: 5px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  td:first-child{
+    border-radius: 10px;
+  }
+  th {
+    font-weight: 400;
+  }
+  
+  td {
+    color: #555;
+  }

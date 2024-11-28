@@ -1,15 +1,14 @@
 import "./Styles/Dash.css";
 import icon from "../Images/Svg/cart.svg";
-import StatCard from "../Components/StatCard";
 import { Link } from "react-router-dom";
-import Graph from "../Components/Graph";
-const Dashboard = () => {
+import StatCard from "../Components/StatCard";
+const Employees = () => {
   return (
     <>
       <div className="margin-p"></div>
       <div className="dash-container">
         <div className="sidebar">
-        <Link to="/Admin/Dashboard">
+          <Link to="/Admin/Dashboard">
             <section>
               <div className="min-sex">
                 <img src={icon} alt="" />
@@ -55,21 +54,49 @@ const Dashboard = () => {
           </Link>
         </div>
         <div className="dash-main">
-          <h1>Dashboard</h1>
-          <div className="stats-container">
-            <StatCard atributo={"Ganancias Totales:"} valor={"$169.902.134 ARS"} />
-            <StatCard atributo={"Productos en Stock"} valor={"16.921"} />
-            <StatCard atributo={"Empleados:"} valor={"32"} />
-            <StatCard atributo={"Ranking Empresa"} valor={"#1567"} />
-          </div>
-          <div style={{ padding: '20px', width: '90%', margin: '0 auto' }}>
-      <h2>Ventas Anuales</h2>
-      <Graph/>
-    </div>
           
+          <div className="table-container">
+          <h1>Employees</h1>
+            <div className="table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Tipo de Empleado</th>
+                    <th>Nombre</th>
+                    <th>Ventas Realizadas</th>
+                    <th>Ganancias Totales</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Vendedor</td>
+                    <td>Juan Pérez</td>
+                    <td>15</td>
+                    <td>$750.00</td>
+                  </tr>
+                  <tr>
+                    <td>Supervisor</td>
+                    <td>María López</td>
+                    <td>20</td>
+                    <td>$1,200.00</td>
+                  </tr>
+                  <tr>
+                    <td>Asistente</td>
+                    <td>Carlos García</td>
+                    <td>10</td>
+                    <td>$500.00</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div className="stats-container">
+            <StatCard atributo={"Empleados:"} valor={"12"} />
+            <StatCard atributo={"Empleado del Mes:"} valor={"Antelo Santino"} />
+          </div>
         </div>
       </div>
     </>
   );
 };
-export default Dashboard;
+export default Employees;

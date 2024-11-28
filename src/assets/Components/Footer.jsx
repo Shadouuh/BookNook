@@ -1,6 +1,6 @@
 import logoIcon from "../Images/Svg/logo.svg";
 import "./Styles/Footer.css";
-
+import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <>
@@ -16,16 +16,16 @@ const Footer = () => {
           <h3>Atajos</h3>
           <ul>
             <li>
-              <a href="#home">Home</a>
+              <Link to="/">Home</Link>
             </li>
             <li>
-              <a href="#catalog">Catalogo</a>
+              <Link to="/Catalog">Catalogo</Link>
             </li>
             <li>
-              <a href="#cart">Carrito</a>
+              <Link to="/Cart">Carrito</Link>
             </li>
             <li>
-              <a href="#profile">Mi Perfil</a>
+              <Link to="/Login">Inicia Sesion</Link>
             </li>
           </ul>
         </div>
