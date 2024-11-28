@@ -30,46 +30,50 @@ const Nav = () => {
 
   return (
     <>
-    <nav className={showNav ? "nav-visible" : "nav-hidden"}>
-      <div className="nav-left">
-        <img src={logoIcon} alt="" />
-        <h1>Book <span id="violetSmall">Nook</span></h1>
-      </div>
+      <nav className={showNav ? "nav-visible" : "nav-hidden"}>
+        <div className="nav-left">
+          <img src={logoIcon} alt="" />
+          <h1>
+            Book <span id="violetSmall">Nook</span>
+          </h1>
+        </div>
 
-      <ul>
-        <Link to="/">Home</Link>
-        <Link to="/Catalog">Catalogo</Link>
-        <Link to="/About">About Us</Link>
-      </ul>
-      <div className="nav-right">
-        <div className="search-container">
-          <button>
-            <img src={searchIcon} alt="" />
-          </button>
-          <hr />
-          <input
-            type="text"
-            name="searchBar"
-            placeholder="Buscar..."
-            className="search-bar"
-          />
+        <ul>
+          <Link to="/">Home</Link>
+          <Link to="/Catalog">Catalogo</Link>
+          <Link to="/About">About Us</Link>
+        </ul>
+        <div className="nav-right">
+          <div className="search-container">
+            <button>
+              <img src={searchIcon} alt="" />
+            </button>
+            <hr />
+            <input
+              type="text"
+              name="searchBar"
+              placeholder="Buscar..."
+              className="search-bar"
+            />
+          </div>
+          <div className="menu">
+            <Link to="Cart">
+              <img src={cartIcon} alt="" />
+            </Link>
+            <button onClick={() => toggleMenu(!menu)}>
+              <img src={userIcon} alt="" />
+            </button>
+          </div>
         </div>
-        <div className="menu">
-          <Link to="Cart">
-            <img src={cartIcon} alt="" />
-          </Link>
-          <button onClick={() => toggleMenu(!menu)}>
-            <img src={userIcon} alt="" />
-          </button>
+      </nav>
+      <div
+        className={menu ? "back" : "back-disable"}
+        onClick={() => toggleMenu(!menu)}
+      >
+        <div className={menu ? "side-menu" : "side-menu-disable"}>
+          <h1>hola</h1>
         </div>
       </div>
-    </nav>
-    <div className={menu ? "back" : "back-disable"} onClick={() => toggleMenu(!menu)}>
-    <div className={menu ? "side-menu" : "side-menu-disable"}>
-    <h1>hola</h1>
-   </div>
-    </div>
-   
     </>
   );
 };
