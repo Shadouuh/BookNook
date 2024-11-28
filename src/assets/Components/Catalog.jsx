@@ -1,28 +1,35 @@
 import { useState, useEffect } from "react";
 import searchIcon from "../Images/Svg/search.svg";
 import "./Styles/Catalog.css";
-import { initMercadoPago, Wallet } from "@mercadopago/sdk-react"; // SDK de Mercado Pago
 
 const Catalog = () => {
   const [books, setBooks] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("El Rubius");
-  const [minPrice, setMinPrice] = useState("");
-  const [maxPrice, setMaxPrice] = useState("");
-  const [selectedGenres, setSelectedGenres] = useState([]);
-  const [exchangeRate, setExchangeRate] = useState(1);
-  const [preferenceId, setPreferenceId] = useState(null); // Estado para almacenar el ID de la preferencia
+  const [searchTerm, setSearchTerm] = useState("El Rubius"); // Para almacenar la búsqueda del usuario
+  const [minPrice, setMinPrice] = useState(""); // Precio mínimo
+  const [maxPrice, setMaxPrice] = useState(""); // Precio máximo
+  const [selectedGenres, setSelectedGenres] = useState([]); // Géneros seleccionados
+  const [exchangeRate, setExchangeRate] = useState(1); // Tasa de cambio de USD a ARS
 
+  // Géneros disponibles
   const genres = [
-    "Ficción", "Drama", "Aventura", "Ciencia ficción", "Fantasía", 
-    "Romántico", "Terror", "Misterio", "Historia", "Biografía"
+    "Ficción",
+    "Drama",
+    "Aventura",
+    "Ciencia ficción",
+    "Fantasía",
+    "Romántico",
+    "Terror",
+    "Misterio",
+    "Historia",
+    "Biografía",
   ];
 
   // Función para obtener la tasa de cambio de USD a ARS
   const fetchExchangeRate = async () => {
     try {
-      const response = await fetch("https://v6.exchangerate-api.com/v6/YOUR-API-KEY/latest/USD");
+      const response = await fetch('https://v6.exchangerate-api.com/v6/YOUR-API-KEY/latest/USD');
       const data = await response.json();
-      setExchangeRate(data.conversion_rates.ARS);
+      setExchangeRate(data.conversion_rates.ARS); // Establecer la tasa de cambio
     } catch (error) {
       console.error("Error al obtener la tasa de cambio:", error);
     }
@@ -32,6 +39,8 @@ const Catalog = () => {
   const fetchBooks = async () => {
     try {
       let query = searchTerm;
+
+      // Agregar los géneros seleccionados a la consulta
       if (selectedGenres.length > 0) {
         query += `+subject:${selectedGenres.join("+subject:")}`;
       }
@@ -41,13 +50,20 @@ const Catalog = () => {
       );
       const data = await response.json();
 
+      // Filtrar los libros que tienen precio disponible y que estén dentro del rango de precios
       const booksWithPrice = data.items?.filter((book) => {
-        const bookPriceInUsd = book.saleInfo?.listPrice?.amount;
-        if (!bookPriceInUsd) return false;
+        const bookPriceInUsd = book.saleInfo?.listPrice?.amount; // Precio en USD
+        if (!bookPriceInUsd) return false; // Si no tiene precio, lo descartamos
 
+        // Convertir el precio a ARS usando la tasa de cambio
         const bookPriceInArs = bookPriceInUsd * exchangeRate;
-        return (minPrice ? bookPriceInArs >= minPrice : true) &&
-               (maxPrice ? bookPriceInArs <= maxPrice : true);
+
+        // Filtrar por rango de precio (si se ha definido) en ARS
+        const priceIsValid =
+          (minPrice ? bookPriceInArs >= minPrice : true) &&
+          (maxPrice ? bookPriceInArs <= maxPrice : true);
+
+        return priceIsValid; // Retornar true si cumple con el rango de precio
       });
 
       setBooks(booksWithPrice || []);
@@ -56,47 +72,24 @@ const Catalog = () => {
     }
   };
 
-  // Crear preferencia de pago en el backend
-  const createPreference = async () => {
-    try {
-      const items = books.map((book) => ({
-        title: book.volumeInfo.title,
-        quantity: 1,
-        unit_price: book.saleInfo?.listPrice?.amount * exchangeRate,
-      }));
-
-      const response = await fetch("http://localhost:8080/create_preference", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ items }),
-      });
-
-      const data = await response.json();
-      setPreferenceId(data.id); // Guardamos el ID de la preferencia
-    } catch (error) {
-      console.error("Error al crear la preferencia:", error);
-    }
-  };
-
-  // Inicializar Mercado Pago con la public key
   useEffect(() => {
-    initMercadoPago("APP_USR-1040ad6c-f057-4855-be2d-0bc8e9dd1687", { locale: "es-AR" });
-  }, []);
-
-  // Efecto para cargar la tasa de cambio y los libros
-  useEffect(() => {
-    fetchExchangeRate();
+    fetchExchangeRate(); // Llamar a la función para obtener la tasa de cambio
     if (searchTerm) {
-      fetchBooks();
+      fetchBooks(); // Llamamos a la API cada vez que el término de búsqueda cambie
     }
   }, [searchTerm, selectedGenres, minPrice, maxPrice, exchangeRate]);
 
-  const shortenTitle = (title) => title.length > 30 ? title.slice(0, 30) + "..." : title;
+  // Función para acortar el título si es muy largo
+  const shortenTitle = (title) => {
+    return title.length > 30 ? title.slice(0, 30) + "..." : title;
+  };
 
-  const convertToPesos = (usdPrice) => (usdPrice * 998).toFixed(2);
+  // Función para convertir el precio de USD a ARS
+  const convertToPesos = (usdPrice) => {
+    return (usdPrice * 998).toFixed(2); // Convertir USD a ARS y redondear a dos decimales
+  };
 
+  // Manejo de los géneros seleccionados
   const handleGenreChange = (genre) => {
     setSelectedGenres((prevGenres) =>
       prevGenres.includes(genre)
@@ -152,17 +145,19 @@ const Catalog = () => {
             placeholder="Buscar..."
             className="search-bar"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => setSearchTerm(e.target.value)} // Actualizamos el estado con el término de búsqueda
           />
         </div>
         <div className="products-container">
           {books.length > 0 ? (
             books.map((book, index) => (
               <div key={index} className="product-card">
+                {/* Imagen del libro */}
                 <img
                   src={book.volumeInfo.imageLinks?.thumbnail || "default_image_url.jpg"}
                   alt={book.volumeInfo.title}
                 />
+                {/* Información del libro */}
                 <div className="product-card-info">
                   <h4>{shortenTitle(book.volumeInfo.title)}</h4>
                   <p>{book.volumeInfo.authors ? book.volumeInfo.authors.join(", ") : "Autor desconocido"}</p>
@@ -172,7 +167,7 @@ const Catalog = () => {
                       : "Precio no disponible"}
                   </p>
                   <div className="actions">
-                    <button className="buy-button" onClick={createPreference}>Comprar</button>
+                    <button className="buy-button">Comprar</button>
                     <button className="cart-button">Agregar al Carrito</button>
                   </div>
                 </div>
@@ -183,13 +178,6 @@ const Catalog = () => {
           )}
         </div>
       </div>
-
-      {/* Mostrar el Checkout Pro con el ID de preferencia */}
-      {preferenceId && (
-        <div className="checkout-container">
-          <Wallet initialization={{ preferenceId }} />
-        </div>
-      )}
     </div>
   );
 };
