@@ -28,7 +28,7 @@ router.post('/login', async (req, res) => {
 
         if (result.length == 0) {
             [resultAlias] = await conex.execute('SELECT id_login FROM usuarios WHERE alias = ?', [user.key]);
-            if (resultAlias.length == 0) return handleError(res, 'no se encotro la cuenta', null, 404);
+            if (resultAlias.length == 0) return handleError(res, 'no se encontro la cuenta', null, 404);
 
             [login] = await conex.execute(
                 'SELECT id_login, tipo FROM login WHERE id_login = ? AND clave=?',

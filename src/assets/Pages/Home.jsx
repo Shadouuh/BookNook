@@ -3,6 +3,7 @@ import "./Styles/Home.css";
 import landing from "../Images/Svg/landing.svg";
 import landingBook from "../Images/Common/book.jpg";
 import I2 from "../Images/Svg/icon2.svg";
+import { Link } from "react-router-dom";
 const allGenres = [
   "Ficción",
   "Drama",
@@ -79,7 +80,9 @@ const Home = () => {
     <>
       <div className="start">
         <div className="left-text">
-          <h1>¡Hola, <span id="violet">Amante de la Lectura!</span></h1>
+          <h1>
+            ¡Hola, <span id="violet">Amante de la Lectura!</span>
+          </h1>
           <h2>
             Imagina caminar por pasillos llenos de historias por descubrir. Cada
             libro es un portal a un mundo nuevo, un refugio donde los sueños
@@ -87,15 +90,19 @@ const Home = () => {
             magia, donde las páginas susurran secretos que solo tú puedes
             conocer. ¿Estás listo para encontrar el libro que cambiará tu vida?
           </h2>
-          <button>
-            <span>Inicia tu Aventura!</span>
-          </button>
+          <Link to="/Login">
+            <button>
+              <span>Inicia tu Aventura!</span>
+            </button>
+          </Link>
         </div>
         <img src={landing} alt="Landing" />
       </div>
       <div className="start" id="reverse">
         <div className="left-text">
-          <h1>¡Leer es <span id="violet">Magico!</span></h1>
+          <h1>
+            ¡Leer es <span id="violet">Magico!</span>
+          </h1>
           <h2>
             Leer es un viaje único hacia mundos desconocidos, personajes
             inolvidables y emociones profundas. Cada página es una aventura y
@@ -103,9 +110,11 @@ const Home = () => {
             a un universo de libros esperando cambiar tu vida. 🌟 ¡Empieza tu
             aventura literaria hoy!
           </h2>
-          <button>
-            <span>Inicia tu Aventura!</span>
-          </button>
+          <Link to="/Login">
+            <button>
+              <span>Inicia tu Aventura!</span>
+            </button>
+          </Link>
         </div>
         <img src={landingBook} alt="Landing" />
       </div>
@@ -116,7 +125,9 @@ const Home = () => {
         <div className="genre-sections">
           {selectedGenres.map((genre) => (
             <div key={genre} className="genre-section">
-              <h2><span id="violet">{genre}</span></h2>
+              <h2>
+                <span id="violet">{genre}</span>
+              </h2>
               <div className="books-container">
                 {books[genre]?.length > 0 ? (
                   books[genre].map((book, index) => (
@@ -146,7 +157,9 @@ const Home = () => {
                     </div>
                   ))
                 ) : (
-                    <p>Parece haber baja señal, Los libros se estan escondiendo :c.</p>
+                  <p>
+                    Parece haber baja señal, Los libros se estan escondiendo :c.
+                  </p>
                 )}
               </div>
             </div>
@@ -158,14 +171,17 @@ const Home = () => {
         <div className="left-text">
           <h1>¡Prueba nuestro cafe 5 Estrellas!</h1>
           <h2>
-            Conoce a <span id="violetSmall">Teresita {"<3"},</span> quien está disfrutando nuestro nuevo Bubble Tea
-            en la acogedora atmósfera de nuestra cafetería en Banfield. ¡Únete a
-            ella y vive la experiencia! Aprovecha un 5% de descuento con
-            nuestro cupón especial. Haz clic en el botón y visítanos hoy mismo.
+            Conoce a <span id="violetSmall">Teresita {"<3"},</span> quien está
+            disfrutando nuestro nuevo Bubble Tea en la acogedora atmósfera de
+            nuestra cafetería en Banfield. ¡Únete a ella y vive la experiencia!
+            Aprovecha un 5% de descuento con nuestro cupón especial. Haz clic en
+            el botón y visítanos hoy mismo.
           </h2>
-          <button>
-            <span>Obtener Cupon!</span>
-          </button>
+          <Link to="/Discount/Coupon">
+            <button>
+              <span>Obtener Cupon!</span>
+            </button>
+          </Link>
         </div>
         <img src={I2} alt="Landing" />
       </div>
