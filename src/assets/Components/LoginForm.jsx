@@ -8,8 +8,12 @@ import { useNavigate } from "react-router-dom";
 
 const notifyError = (message) => {
   toast.error(message);
-};
-const notifySuccess = (message) => toast.success(message);
+  console.log("Error" + message );
+}
+  const notifySuccess = (message) => {
+  toast.success(message);
+  console.log("Todp boem" + message );
+}
 const LoginForm = () => {
   // Form Config
   const [formType, setForm] = useState(false);
@@ -64,7 +68,7 @@ const goTo = useNavigate();
       };
 
       axios
-        .post("http://localhost:3001/usuario/register", userData)
+        .post("http://localhost:3000/usuario/register", userData)
         .then((response) => {
           notifySuccess("Usuario Registrado: " + response.data.resultado);
         })

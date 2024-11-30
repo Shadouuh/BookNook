@@ -80,6 +80,10 @@ const Catalog = () => {
     }
   };
 
+  const addToCart = async () => {
+    
+  } 
+
   // Inicializar Mercado Pago con la public key
   useEffect(() => {
     initMercadoPago("APP_USR-1040ad6c-f057-4855-be2d-0bc8e9dd1687", { locale: "es-AR" });
@@ -173,7 +177,7 @@ const Catalog = () => {
                   </p>
                   <div className="actions">
                     <button className="buy-button" onClick={createPreference}>Comprar</button>
-                    <button className="cart-button">Agregar al Carrito</button>
+                    <button className="cart-button" onClick={addToCart} >Agregar al Carrito</button>
                   </div>
                 </div>
               </div>

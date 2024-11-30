@@ -1,6 +1,61 @@
 import "./Styles/Cart.css";
 import BookIcon from "../Images/Svg/logo.svg";
+import { useState, useEffect } from "react";
+
 const Cart = () => {
+
+  //Aca iria el id del usuario logeado
+  const id_usuario = 1;
+
+  const [books, setBooks] = useState([]);
+
+  const fetchCart = async () => {
+    try {
+      let booksReady = [];
+      const response = await fetch(`http://localhost:3000/carrito/items/ver/${id_usuario}`);
+
+      if (response.ok) {
+        const results = await response.json();
+        console.log('Los items', results.resultItems);
+
+        for (const item of results.resultItems) {
+          const bookResponse = await fetch(`https://www.googleapis.com/books/v1/volumes/${item.id_libro}`);
+          booksReady.push(await bookResponse.json());
+          console.log("cada item: ", bookResponse);
+        }
+        setBooks(booksReady);
+        console.log(books);
+      } else {
+        console.error('Error al buscar en el carrito', response.status);
+      }
+    } catch (error) {
+      console.error('Hubo un problema al obtener el carrito:', error);
+    }
+  };
+
+  const addToCart = async (id) => {
+    const response = await fetch('http://localhost:3000/carrito/insertar', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id })
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      console.log('Libro agregado al carrito:', result);
+    } else {
+      console.error('Error al agregar el libro al carrito:', response.status);
+    }
+  }
+
+  let mounted = true;
+  useEffect(() => {
+    if (mounted) fetchCart();
+    mounted = false;
+  }, []);
+
   return (
     <div className="cart-container">
       <div className="cart-items">
