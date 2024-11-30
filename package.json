@@ -2,7 +2,6 @@
   "name": "book-nook",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
     "client": "vite",
     "build": "vite build",
@@ -11,14 +10,21 @@
   },
   "dependencies": {
     "@mercadopago/sdk-react": "^0.0.19",
+    "anju-js": "^2.3.1",
     "axios": "^1.7.8",
     "chart.js": "^4.4.6",
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
+    "multer": "^1.4.5-lts.1",
+    "mysql2": "^3.11.5",
+    "path": "^0.12.7",
     "qrcode": "^1.5.4",
     "react": "^18.3.1",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.3.1",
     "react-hot-toast": "^2.4.1",
-    "react-router-dom": "^6.28.0"
+    "react-router-dom": "^6.28.0",
+    "sharp": "^0.33.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
