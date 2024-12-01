@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 01-12-2024 a las 16:38:02
+-- Tiempo de generación: 01-12-2024 a las 21:37:15
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -162,7 +162,10 @@ CREATE TABLE `empleados` (
 --
 
 INSERT INTO `empleados` (`id_empleado`, `dni`, `nombre`, `apellido`, `area`, `id_sede`) VALUES
-(1, '47232321', 'Ezequiel', 'Enrriquez', 'Reparto', 1);
+(1, '47232321', 'Ezequiel', 'Enrriquez', 'Reparto', 1),
+(2, '221212121', 'Ray', 'Bradbury', 'Ventas', 2),
+(5, '123345678', 'Cuan', 'Antelo', 'Administracion', 1),
+(8, '99999999', 'Pollito', 'Antelo', 'SemiDios', 1);
 
 -- --------------------------------------------------------
 
@@ -668,7 +671,7 @@ ALTER TABLE `editoriales`
 -- AUTO_INCREMENT de la tabla `empleados`
 --
 ALTER TABLE `empleados`
-  MODIFY `id_empleado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_empleado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `encargados`
