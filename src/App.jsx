@@ -14,6 +14,8 @@ import Employees from "./assets/Pages/Employees";
 import ScrollToTop from "./assets/Components/ScrollToTop";
 import CartPage from "./assets/Pages/CartPage";
 import Orders from "./assets/Pages/Orders";
+import FormBuy from "./assets/Pages/FormBuy";
+
 const App = () => {
   return (
     <Router>
@@ -30,6 +32,7 @@ const App = () => {
           <Route path="/Catalog" element={<Products />} />
           <Route path="/Discount/Coupon" element={<Coupon />} />
           <Route path="/Cart" element={<CartPage />} />
+          <Route path="/FormBuy" element={<FormBuy />} />
           <Route path="/Admin/Dashboard" element={<Dashboard />} />
           <Route path="/Admin/Sales" element={<Sales />} />
           <Route path="/Admin/Employees" element={<Employees />} />

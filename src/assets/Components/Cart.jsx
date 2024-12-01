@@ -1,6 +1,7 @@
 import "./Styles/Cart.css";
 import BookIcon from "../Images/Svg/logo.svg";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const Cart = () => {
 
@@ -20,35 +21,23 @@ const Cart = () => {
 
         for (const item of results.resultItems) {
           const bookResponse = await fetch(`https://www.googleapis.com/books/v1/volumes/${item.id_libro}`);
-          booksReady.push(await bookResponse.json());
-          console.log("cada item: ", bookResponse);
+          let bookData = await bookResponse.json();
+
+          console.log("cada item: ", bookData);
+
+          booksReady.push(bookData);
         }
         setBooks(booksReady);
-        console.log(books);
-      } else {
-        console.error('Error al buscar en el carrito', response.status);
-      }
+      } else console.error('Error al buscar en el carrito', response.status);
     } catch (error) {
       console.error('Hubo un problema al obtener el carrito:', error);
     }
   };
 
-  const addToCart = async (id) => {
-    const response = await fetch('http://localhost:3000/carrito/insertar', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ id })
-    });
+  useEffect(() => {
+    console.log('Libros en el estado actualizado:', books);
+  }, [books]);
 
-    if (response.ok) {
-      const result = await response.json();
-      console.log('Libro agregado al carrito:', result);
-    } else {
-      console.error('Error al agregar el libro al carrito:', response.status);
-    }
-  }
 
   let mounted = true;
   useEffect(() => {
@@ -56,46 +45,53 @@ const Cart = () => {
     mounted = false;
   }, []);
 
+
   return (
     <div className="cart-container">
       <div className="cart-items">
         <h2>Tu Carrito</h2>
-        <div className="cart-item">
-          <img src={BookIcon} alt="Libro 1" />
-          <div className="item-details">
-            <h3>Nombre del Libro</h3>
-            <p className="item-price">$15.00</p>
-            <div className="quantity">
-              <button className="quantity-btn">-</button>
-              <span>1</span>
-              <button className="quantity-btn">+</button>
+        {books.map((book) => (
+          <div className="cart-item" key={book.id}>
+            <img
+              src={book.volumeInfo.imageLinks?.thumbnail || BookIcon}
+              alt={book.volumeInfo.title || "Sin título"}
+            />
+            <div className="item-details">
+              <h3>{book.volumeInfo.title || "Título no disponible"}</h3>
+              <p className="item-price">
+                {book.saleInfo?.listPrice?.amount
+                  ? `$${book.saleInfo.listPrice.amount}`
+                  : "Precio no disponible"}
+              </p>
+              <div className="quantity">
+                <button className="quantity-btn">-</button>
+                <span>1</span>
+                <button className="quantity-btn">+</button>
+              </div>
             </div>
+            <button className="remove-btn">Eliminar</button>
           </div>
-          <button className="remove-btn">Eliminar</button>
-        </div>
-
-        <div className="cart-item">
-          <img src={BookIcon} alt="Libro 2" />
-          <div className="item-details">
-            <h3>Otro Libro</h3>
-            <p className="item-price">$20.00</p>
-            <div className="quantity">
-              <button className="quantity-btn">-</button>
-              <span>2</span>
-              <button className="quantity-btn">+</button>
-            </div>
-          </div>
-          <button className="remove-btn">Eliminar</button>
-        </div>
+        ))}
+        {books.length === 0 && <p>No tienes libros en el carrito.</p>}
       </div>
 
       <div className="cart-summary">
         <h2>Resumen</h2>
         <p>Total de la compra:</p>
-        <p className="total-price">$55.00</p>
-        <button className="checkout-btn">Finalizar Compra</button>
+        <p className="total-price">
+          {books
+            .reduce((total, book) => {
+              return (
+                total +
+                (book.saleInfo?.listPrice?.amount || 0)
+              );
+            }, 0)
+            .toFixed(2)}
+        </p>
+        <Link to="/FormBuy" className="checkout-btn"> Comprar </Link>
       </div>
     </div>
   );
-};
+}
+
 export default Cart;

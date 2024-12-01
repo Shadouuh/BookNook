@@ -80,10 +80,15 @@ router.post('/pedir', async (req, res) => {
 
         if (id_carrito.length == 0) return handleError(res, 'No se encontro el carrito', null, 404);
 
-        await conex.execute(
+        const [pedido] = await conex.execute(
             'INSERT INTO pedidos(total, estado, fecha_estimada, id_usuario, id_carrito) VALUES(?, "pendiente", ?, ?,?)',
             [order.total, order.fecha_estimada, order.id_usuario, id_carrito[0].id_carrito]
         );
+
+        await conex.execute(
+            'INSERT INTO transaccion(id_pedido, metodo_pago, num_tarjeta, estado) VALUES(?, ?, ?, "pendiente")',
+            [pedido.insertId, order.metodo_pago, order.num_tarjeta]
+        )
 
         await conex.execute(
             'INSERT INTO carrito(id_usuario, es_actual) VALUES(?, true)',
