@@ -311,7 +311,7 @@ const Employees = () => {
                     <button type="submit" onClick={(e) => editEmployees()}>Editar</button>
                     <button type="submit" onClick={(e) => {cancel(e)}}>Cancelar</button>
                   </div>
-                ) : (<button type="submit" onClick={(e) => insertEmployees}>Agregar</button>)
+                ) : (<button type="submit" onClick={(e) => insertEmployees(e)}>Agregar</button>)
               }
             </form>
           </div>
