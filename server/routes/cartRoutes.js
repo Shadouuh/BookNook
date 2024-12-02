@@ -13,7 +13,6 @@ init();
 //Insert into cart
 router.post('/insertar', async (req, res) => {
     const { cart } = req.body;
-    const cantidad = cart.cantidad || 1
 
     try {
         const [resultCart] = await conex.execute(
@@ -25,7 +24,7 @@ router.post('/insertar', async (req, res) => {
 
         await conex.execute(
             'INSERT INTO carrito_items(id_carrito, id_libro, cantidad) VALUES(?, ?, ?)',
-            [resultCart[0].id_carrito, cart.id_libro, cantidad]
+            [resultCart[0].id_carrito, cart.id_libro, cart.cantidad]
         );
 
         res.status(201).send({ message: 'Se guardo el item en el carrito' });

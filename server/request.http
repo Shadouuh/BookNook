@@ -123,7 +123,8 @@ Content-Type: application/json
 {
     "cart": {
         "id_libro": 1,
-        "id_usuario": 1
+        "id_usuario": 1,
+        "cantidad": 3
     }
 }
 

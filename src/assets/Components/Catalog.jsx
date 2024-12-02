@@ -3,6 +3,8 @@ import searchIcon from "../Images/Svg/search.svg";
 import "./Styles/Catalog.css";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react"; // SDK de Mercado Pago
 
+import AddToCart from "./addToCart";
+
 const Catalog = () => {
   const [books, setBooks] = useState([]);
   const [searchTerm, setSearchTerm] = useState("El Rubius");
@@ -80,10 +82,6 @@ const Catalog = () => {
     } catch (error) {
       console.error("Error al crear la preferencia:", error);
     }
-  };
-
-  const addToCart = async () => {
-    // Lógica para agregar al carrito (si es necesario)
   };
 
   // Inicializar Mercado Pago con la public key
@@ -182,8 +180,9 @@ const Catalog = () => {
                       : "Precio no disponible"}
                   </p>
                   <div className="actions">
-                    <button className="buy-button" onClick={createPreference}>Comprar</button>
-                    <button className="cart-button" onClick={addToCart}>Agregar al Carrito</button>
+                    {/* <button className="buy-button" onClick={createPreference}>Comprar</button> */}
+                    {book.saleInfo?.listPrice && (<AddToCart id_libro={book.id} />)}
+                    {/* <button className="cart-button" onClick={(e) => }>Agregar al Carrito</button> */}
                   </div>
                 </div>
               </div>
