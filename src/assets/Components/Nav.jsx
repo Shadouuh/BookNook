@@ -18,7 +18,7 @@ const Nav = () => {
 
   useEffect(() => {
     const storedUserConfig = localStorage.getItem("userConfig");
-    console.log("UserConfig desde localStorage:", storedUserConfig); // Verificar qué se guarda en localStorage
+    // console.log("UserConfig desde localStorage:", storedUserConfig); // Verificar qué se guarda en localStorage
 
     if (storedUserConfig) {
       const parsedUserConfig = JSON.parse(storedUserConfig);

@@ -5,30 +5,37 @@ import { Link } from "react-router-dom";
 import coffeeIcon from "../Images/Common/cofi.png";
 const Cart = () => {
 
-  // Aca iria el id del usuario logeado
-  const id_usuario = 1;
   const userConfig = localStorage.getItem("userConfig");
+
+  const userParse = JSON.parse(userConfig);
+  const id_usuario = userParse?.data?.user[0]?.id_usuario;
+
   const isLogged = !!userConfig;
   const [books, setBooks] = useState([]);
 
   const fetchCart = async () => {
     try {
       let booksReady = [];
-      const response = await fetch(`http://localhost:3000/carrito/items/ver/${id_usuario}`);
+      const response = await fetch('http://localhost:3000/carrito/items/ver/' + id_usuario);
 
       if (response.ok) {
         const results = await response.json();
-        console.log('Los items', results.resultItems);
 
         for (const item of results.resultItems) {
           const bookResponse = await fetch(`https://www.googleapis.com/books/v1/volumes/${item.id_libro}`);
-          let bookData = await bookResponse.json();
+          if (bookResponse.ok) {
+            let bookData = await bookResponse.json();
 
-          console.log("cada item: ", bookData);
-
-          booksReady.push(bookData);
+            booksReady.push({
+              ...bookData,
+              quantity: item.cantidad
+            });
+          } else {
+            console.error('Error al obtener los datos del libro', bookResponse.status);
+          }
         }
         setBooks(booksReady);
+        console.log('Libros cargados con cantidades:', booksReady);
       } else {
         console.error('Error al buscar en el carrito', response.status);
       }
@@ -37,23 +44,68 @@ const Cart = () => {
     }
   };
 
-  useEffect(() => {
-    console.log('Libros en el estado actualizado:', books);
-  }, [books]);
 
-  let mounted = true;
+  const deleteItem = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:3000/carrito/borrar/${id}/${id_usuario}`, {
+        method: 'DELETE'
+      });
+
+      if (response.ok) {
+        console.log('Se elimino')
+      }
+    } catch (error) {
+      console.error('Hubo un problema al intentar eliminar el item:', error);
+    }
+  }
+
+  const updateQuantity = async (bookId, increment) => {
+    const bookToUpdate = books.find((book) => book.id === bookId);
+    if (!bookToUpdate) {
+      console.error("Libro no encontrado en el carrito.");
+      return;
+    }
+
+    const newQuantity = Math.max(1, bookToUpdate.quantity + increment);
+
+    setBooks((prevBooks) =>
+      prevBooks.map((book) =>
+        book.id === bookId ? { ...book, quantity: newQuantity } : book
+      )
+    );
+
+    try {
+      const response = await fetch(`http://localhost:3000/carrito/actualizar`, {
+        method: 'PUT',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id_libro: bookId,
+          id_usuario: id_usuario,
+          cantidad: newQuantity,
+        }),
+      });
+
+      if (response.ok) {
+        console.log('La cantidad fue actualizada en la base de datos.');
+      } else {
+        console.error('Error al actualizar la base de datos:', response.status);
+      }
+    } catch (error) {
+      console.error('Hubo un problema al intentar actualizar la base de datos:', error);
+    }
+  };
+
   useEffect(() => {
-    if (mounted && isLogged) fetchCart();
-    mounted = false;
+    if (isLogged) fetchCart();
   }, [isLogged]);
 
   if (!isLogged) {
     return (
       <div className="error">
         <h1>Inicia sesión para guardar tus compras</h1>
-        <img src={coffeeIcon} alt="" className="last"/>
-    
-        
+        <img src={coffeeIcon} alt="" className="last" />
       </div>
     );
   }
@@ -76,12 +128,23 @@ const Cart = () => {
                   : "Precio no disponible"}
               </p>
               <div className="quantity">
-                <button className="quantity-btn">-</button>
-                <span>1</span>
-                <button className="quantity-btn">+</button>
+                <button
+                  onClick={() => updateQuantity(book.id, -1)}
+                  className="quantity-btn"
+                >
+                  -
+                </button>
+                <span>{book.quantity}</span>
+                <button
+                  onClick={() => updateQuantity(book.id, 1)}
+                  className="quantity-btn"
+                >
+                  +
+                </button>
               </div>
+
             </div>
-            <button className="remove-btn">Eliminar</button>
+            <button className="remove-btn" onClick={(e) => { deleteItem(book.id) }}>Eliminar</button>
           </div>
         ))}
         {books.length === 0 && <p>No tienes libros en el carrito.</p>}
