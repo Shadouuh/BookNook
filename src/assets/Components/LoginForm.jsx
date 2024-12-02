@@ -5,7 +5,7 @@ import "./Styles/Login.css";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-
+import loginS from '../Images/Svg/loginImage.svg'; 
 const notifyError = (message) => {
   toast.error(message);
   console.log("Error" + message );
@@ -110,10 +110,12 @@ const goTo = useNavigate();
   return (
     <>
     
-      <div className="form">
-        {formType ? (
+      <div>
+        {!formType ? (
           <div className="form">
+
             <div className="changeForm">
+              <img src={loginS} alt="" />
               <h2>Bienvenido a Book Nook</h2>
               <h3>¿Aún no tienes una cuenta?</h3>
               <h4>Estás a punto de descubrir un mundo de fantasía.</h4>
@@ -138,7 +140,7 @@ const goTo = useNavigate();
                 onChange={setInputToLogin}
                 value={login.clave}
               />
-              <input type="submit" className="button" value="Iniciar Sesion!" />
+              <input type="submit" className="button" value="Iniciar Sesion!" id="rounded" />
 
               <a href="">Olvido su Contraseña?</a>
             </form>
@@ -146,6 +148,7 @@ const goTo = useNavigate();
         ) : (
           <div className="form">
             <div className="changeForm">
+            <img src={loginS} alt="" />
               <h2>¡Bienvenido de nuevo a Book Nook!</h2>
               <h3>¿Ya tienes una cuenta?</h3>
               <h4>
@@ -238,7 +241,7 @@ const goTo = useNavigate();
                   value={user.telefono}
                 />
               </div>
-              <input type="submit" className="button" value="Cree su Cuenta!" />
+              <input type="submit" className="button" value="Cree su Cuenta!" id="rounded"/>
             </form>
           </div>
         )}

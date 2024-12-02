@@ -88,3 +88,10 @@ outline: none;
     height: 25vh;
   }
 }
+.noti{
+  display: flex;
+  z-index: 999999999999999999999999999999999999;
+}
+.text{
+  font-size: 24px;
+}

@@ -1,5 +1,8 @@
 import "./Styles/Dash.css";
-import icon from "../Images/Svg/cart.svg";
+import dashIcon from "../Images/Svg/dash.svg";
+import salesIcon from "../Images/Svg/sales.svg";
+import employIcon from "../Images/Svg/employ.svg";
+import orderIcon from "../Images/Svg/order.svg";
 import { Link } from "react-router-dom";
 import StatCard from "../Components/StatCard";
 const Sales = () => {
@@ -11,7 +14,7 @@ const Sales = () => {
           <Link to="/Admin/Dashboard">
             <section>
               <div className="min-sex">
-                <img src={icon} alt="" />
+                <img src={dashIcon} alt="" className="svg-color" />
                 <hr />
               </div>
               <div className="center">
@@ -22,7 +25,7 @@ const Sales = () => {
           <Link to="/Admin/Sales">
             <section>
               <div className="min-sex">
-                <img src={icon} alt="" />
+                <img src={salesIcon} alt="" className="svg-color" />
                 <hr />
               </div>
               <div className="center">
@@ -33,7 +36,7 @@ const Sales = () => {
           <Link to="/Admin/Employees">
             <section>
               <div className="min-sex">
-                <img src={icon} alt="" />
+                <img src={employIcon} alt="" className="svg-color" />
                 <hr />
               </div>
               <div className="center">
@@ -44,7 +47,7 @@ const Sales = () => {
           <Link to="/Admin/Orders">
             <section>
               <div className="min-sex">
-                <img src={icon} alt="" />
+                <img src={orderIcon} alt="" className="svg-color" />
                 <hr />
               </div>
               <div className="center">
@@ -54,9 +57,8 @@ const Sales = () => {
           </Link>
         </div>
         <div className="dash-main">
-          
           <div className="table-container">
-          <h1>Ventas</h1>
+            <h1>Ventas</h1>
             <div className="table">
               <table>
                 <thead>

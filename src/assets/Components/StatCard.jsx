@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import './Styles/Stats.css';
-import icon from '../Images/Svg/cart.svg';
+import icon from '../Images/Svg/stat.svg';
 const StatCard = ( { atributo, valor } ) => {
     return (
         <div className="stat-card">

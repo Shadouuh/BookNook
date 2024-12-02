@@ -9,8 +9,8 @@ const Graph = () => {
       {
         label: 'Ventas ($)',
         data: [1200, 1900, 800, 1500, 2000],
-        backgroundColor: 'rgba(75, 192, 192, 0.6)',
-        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: '#657ed4',
+        borderColor: '#657ed4',
         borderWidth: 1,
       },
     ],

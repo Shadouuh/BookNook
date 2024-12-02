@@ -1,5 +1,8 @@
 import "./Styles/Dash.css";
-import icon from "../Images/Svg/cart.svg";
+import dashIcon from "../Images/Svg/dash.svg";
+import salesIcon from "../Images/Svg/sales.svg";
+import employIcon from "../Images/Svg/employ.svg";
+import orderIcon from "../Images/Svg/order.svg";
 import { Link } from "react-router-dom";
 import StatCard from "../Components/StatCard";
 const Orders = () => {
@@ -11,7 +14,7 @@ const Orders = () => {
           <Link to="/Admin/Dashboard">
             <section>
               <div className="min-sex">
-                <img src={icon} alt="" />
+                <img src={dashIcon} alt="" className="svg-color" />
                 <hr />
               </div>
               <div className="center">
@@ -22,29 +25,29 @@ const Orders = () => {
           <Link to="/Admin/Sales">
             <section>
               <div className="min-sex">
-                <img src={icon} alt="" />
+                <img src={salesIcon} alt="" className="svg-color" />
                 <hr />
               </div>
               <div className="center">
-                <h4>Sales</h4>
+                <h4>Ventas</h4>
               </div>
             </section>
           </Link>
           <Link to="/Admin/Employees">
             <section>
               <div className="min-sex">
-                <img src={icon} alt="" />
+                <img src={employIcon} alt="" className="svg-color" />
                 <hr />
               </div>
               <div className="center">
-                <h4>Employees</h4>
+                <h4>Empleados</h4>
               </div>
             </section>
           </Link>
           <Link to="/Admin/Orders">
             <section>
               <div className="min-sex">
-                <img src={icon} alt="" />
+                <img src={orderIcon} alt="" className="svg-color" />
                 <hr />
               </div>
               <div className="center">
@@ -54,14 +57,14 @@ const Orders = () => {
           </Link>
         </div>
         <div className="dash-main">
-        <div className="stats-container">
+          <div className="stats-container">
             <StatCard atributo={"Pendientes"} valor={"31"} />
             <StatCard atributo={"Realizados del Mes"} valor={"124"} />
             <StatCard atributo={"Mayor N° Pedidos"} valor={"Thiago Gonzalez"} />
           </div>
           <div className="table-container">
             <h1>Orders</h1>
-            
+
             <div className="table">
               <table>
                 <thead>

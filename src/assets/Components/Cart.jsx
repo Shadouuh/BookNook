@@ -2,12 +2,13 @@ import "./Styles/Cart.css";
 import BookIcon from "../Images/Svg/logo.svg";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
+import coffeeIcon from "../Images/Common/cofi.png";
 const Cart = () => {
 
-  //Aca iria el id del usuario logeado
+  // Aca iria el id del usuario logeado
   const id_usuario = 1;
-
+  const userConfig = localStorage.getItem("userConfig");
+  const isLogged = !!userConfig;
   const [books, setBooks] = useState([]);
 
   const fetchCart = async () => {
@@ -28,7 +29,9 @@ const Cart = () => {
           booksReady.push(bookData);
         }
         setBooks(booksReady);
-      } else console.error('Error al buscar en el carrito', response.status);
+      } else {
+        console.error('Error al buscar en el carrito', response.status);
+      }
     } catch (error) {
       console.error('Hubo un problema al obtener el carrito:', error);
     }
@@ -38,13 +41,22 @@ const Cart = () => {
     console.log('Libros en el estado actualizado:', books);
   }, [books]);
 
-
   let mounted = true;
   useEffect(() => {
-    if (mounted) fetchCart();
+    if (mounted && isLogged) fetchCart();
     mounted = false;
-  }, []);
+  }, [isLogged]);
 
+  if (!isLogged) {
+    return (
+      <div className="error">
+        <h1>Inicia sesión para guardar tus compras</h1>
+        <img src={coffeeIcon} alt="" className="last"/>
+    
+        
+      </div>
+    );
+  }
 
   return (
     <div className="cart-container">
@@ -54,7 +66,7 @@ const Cart = () => {
           <div className="cart-item" key={book.id}>
             <img
               src={book.volumeInfo.imageLinks?.thumbnail || BookIcon}
-              alt={book.volumeInfo.title || "Sin título"}
+              alt={book.volumeInfo?.title || "Sin título"}
             />
             <div className="item-details">
               <h3>{book.volumeInfo.title || "Título no disponible"}</h3>
@@ -81,10 +93,7 @@ const Cart = () => {
         <p className="total-price">
           {books
             .reduce((total, book) => {
-              return (
-                total +
-                (book.saleInfo?.listPrice?.amount || 0)
-              );
+              return total + (book.saleInfo?.listPrice?.amount || 0);
             }, 0)
             .toFixed(2)}
         </p>

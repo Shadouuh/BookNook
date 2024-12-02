@@ -5,7 +5,7 @@
   width: 90%;
   background-color: #fff;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
   overflow: hidden;
 }
 
@@ -113,7 +113,9 @@
   font-size: 1rem;
   transition: background-color 0.3s;
 }
-
+.last {
+  height: 70vh;
+}
 .checkout-btn:hover {
   background-color: #e5533d;
 }

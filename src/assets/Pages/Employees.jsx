@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./Styles/Dash.css";
-import icon from "../Images/Svg/cart.svg";
+import dashIcon from "../Images/Svg/dash.svg";
+import salesIcon from "../Images/Svg/sales.svg";
+import employIcon from "../Images/Svg/employ.svg";
+import orderIcon from "../Images/Svg/order.svg";
 import { Link } from "react-router-dom";
 
 const Employees = () => {
-
   const [editBtn, setEditBtn] = useState(false);
 
   const [id, setId] = useState(0);
@@ -31,26 +33,25 @@ const Employees = () => {
         employeesReady = employeesData.resultados;
         setEmployees(employeesReady);
       }
-
     } catch (error) {
-      console.log('Error al buscar los empleados', error);
+      console.log("Error al buscar los empleados", error);
     }
-  }
+  };
 
   const insertEmployees = async (e) => {
     e.preventDefault();
 
     try {
       const response = await fetch("http://localhost:3000/api/empleados", {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ dates: formData })
+        body: JSON.stringify({ dates: formData }),
       });
 
       if (response.ok) {
-        console.log('Se inserto el empleado')
+        console.log("Se inserto el empleado");
       }
 
       setFormData({
@@ -60,20 +61,18 @@ const Employees = () => {
         area: "",
         id_sede: "",
       });
-
     } catch (error) {
-      console.log('Error al inserar el empleado', error);
+      console.log("Error al inserar el empleado", error);
     }
-  }
+  };
 
   const EmployessToForm = async (employee) => {
-
     try {
       setEditBtn(true);
 
       setId(employee.id_empleado);
 
-      console.log('El empleado: ', employee);
+      console.log("El empleado: ", employee);
       setFormData({
         dni: employee.dni,
         nombre: employee.nombre,
@@ -81,24 +80,26 @@ const Employees = () => {
         area: employee.area,
         id_sede: employee.id_sede,
       });
-
     } catch (error) {
-      console.log('Error al actualizar el empleado', error);
+      console.log("Error al actualizar el empleado", error);
     }
   };
 
   const editEmployees = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/empleados/"+id, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ dates: formData })
-      });
+      const response = await fetch(
+        "http://localhost:3000/api/empleados/" + id,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ dates: formData }),
+        }
+      );
 
       if (response.ok) {
-        console.log('Se actualizo el empleado')
+        console.log("Se actualizo el empleado");
       }
 
       setFormData({
@@ -108,23 +109,25 @@ const Employees = () => {
         area: "",
         id_sede: "",
       });
-
     } catch (error) {
-      console.log('Error al actualizar el empleado', error);
+      console.log("Error al actualizar el empleado", error);
     }
-  }
+  };
 
   const deleteEmployees = async (id_empleado) => {
     try {
-      const response = await fetch("http://localhost:3000/api/empleados/" + id_empleado, {
-        method: 'DELETE',
-      });
+      const response = await fetch(
+        "http://localhost:3000/api/empleados/" + id_empleado,
+        {
+          method: "DELETE",
+        }
+      );
 
       if (response.ok) {
         console.log(`Empleado con ID ${id_empleado} eliminado`);
       }
     } catch (error) {
-      console.log('Error al borrar el empleado', error);
+      console.log("Error al borrar el empleado", error);
     }
   };
 
@@ -138,7 +141,7 @@ const Employees = () => {
       area: "",
       id_sede: "",
     });
-  }
+  };
 
   const [formData, setFormData] = useState({
     dni: "",
@@ -165,7 +168,7 @@ const Employees = () => {
           <Link to="/Admin/Dashboard">
             <section>
               <div className="min-sex">
-                <img src={icon} alt="" />
+                <img src={dashIcon} alt="" className="svg-color" />
                 <hr />
               </div>
               <div className="center">
@@ -176,7 +179,7 @@ const Employees = () => {
           <Link to="/Admin/Sales">
             <section>
               <div className="min-sex">
-                <img src={icon} alt="" />
+                <img src={salesIcon} alt="" className="svg-color" />
                 <hr />
               </div>
               <div className="center">
@@ -187,7 +190,7 @@ const Employees = () => {
           <Link to="/Admin/Employees">
             <section>
               <div className="min-sex">
-                <img src={icon} alt="" />
+                <img src={employIcon} alt="" className="svg-color" />
                 <hr />
               </div>
               <div className="center">
@@ -198,7 +201,7 @@ const Employees = () => {
           <Link to="/Admin/Orders">
             <section>
               <div className="min-sex">
-                <img src={icon} alt="" />
+                <img src={orderIcon} alt="" className="svg-color" />
                 <hr />
               </div>
               <div className="center">
@@ -232,8 +235,22 @@ const Employees = () => {
                       <td>{employee.apellido}</td>
                       <td>{employee.area}</td>
                       <td>{employee.id_sede}</td>
-                      <td><button type="submit" onClick={(e) => EmployessToForm(employee)}>Editar</button></td>
-                      <td><button type="submit" onClick={(e) => deleteEmployees(employee.id_empleado)}>borrar</button></td>
+                      <td>
+                        <button
+                          type="submit"
+                          onClick={(e) => EmployessToForm(employee)}
+                        >
+                          Editar
+                        </button>
+                      </td>
+                      <td>
+                        <button
+                          type="submit"
+                          onClick={(e) => deleteEmployees(employee.id_empleado)}
+                        >
+                          borrar
+                        </button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -305,14 +322,25 @@ const Employees = () => {
                 />
               </label>
               <br />
-              {editBtn ?
-                (
-                  <div>
-                    <button type="submit" onClick={(e) => editEmployees()}>Editar</button>
-                    <button type="submit" onClick={(e) => {cancel(e)}}>Cancelar</button>
-                  </div>
-                ) : (<button type="submit" onClick={(e) => insertEmployees(e)}>Agregar</button>)
-              }
+              {editBtn ? (
+                <div>
+                  <button type="submit" onClick={(e) => editEmployees()}>
+                    Editar
+                  </button>
+                  <button
+                    type="submit"
+                    onClick={(e) => {
+                      cancel(e);
+                    }}
+                  >
+                    Cancelar
+                  </button>
+                </div>
+              ) : (
+                <button type="submit" onClick={(e) => insertEmployees(e)}>
+                  Agregar
+                </button>
+              )}
             </form>
           </div>
         </div>
