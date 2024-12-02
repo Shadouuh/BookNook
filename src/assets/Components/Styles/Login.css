@@ -1,13 +1,16 @@
+form {
+  margin-bottom: 10vh;
+}
 .form {
     width: 75vw;
     min-height: 70vh;
     height: fit-content;
     display: flex;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
     border-radius: 50px;
     overflow: hidden;
+    margin-bottom: 10vh;
     transition: 0.3s ease-in-out;
-    margin-bottom: 1vh;
   }
   .loginForm hr {
     border: none;
@@ -68,8 +71,8 @@
       box-shadow: 0 0px 10px 10px rgba(0, 0, 0, 0.65);
     }
   }
-  .changeForm button, .button {
-    background-color: #ffafcc;
+  .changeForm button, .button, #rounded {
+    background-color: #ff6347;
     border: none;
     padding: 10px 20px;
     margin: 20px;
@@ -79,17 +82,18 @@
   }
   
   .changeForm button:hover, .button:hover{
-    background-color: #ff6b81;
+    background-color: rgb(255, 82, 51);
   }
   
   .loginForm input {
     border: 1px solid #ccc;
     padding: 10px;
     border-radius: 5px;
+    transition: ease-in-out .3s;
     width: 50%;
     color: black;
     margin-bottom: 10px;
-    transition: border-color 0.3s ease;
+    
   }
   
   input:focus {

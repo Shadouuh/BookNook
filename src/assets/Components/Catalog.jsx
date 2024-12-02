@@ -9,35 +9,28 @@ const Catalog = () => {
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [selectedGenres, setSelectedGenres] = useState([]);
-  const [exchangeRate, setExchangeRate] = useState(1);
   const [preferenceId, setPreferenceId] = useState(null); // Estado para almacenar el ID de la preferencia
+  const [startIndex, setStartIndex] = useState(0); // Estado para el índice de los libros
+  const [isLoading, setIsLoading] = useState(false); // Estado para el cargando
+  const [hasMore, setHasMore] = useState(true); // Estado para saber si hay más libros para cargar
 
+  // Géneros en inglés para usar con la API de Google Books
   const genres = [
-    "Ficción", "Drama", "Aventura", "Ciencia ficción", "Fantasía", 
-    "Romántico", "Terror", "Misterio", "Historia", "Biografía"
+    "fiction", "drama", "adventure", "science fiction", "fantasy",
+    "romance", "horror", "mystery", "history", "biography"
   ];
 
-  // Función para obtener la tasa de cambio de USD a ARS
-  const fetchExchangeRate = async () => {
-    try {
-      const response = await fetch("https://v6.exchangerate-api.com/v6/YOUR-API-KEY/latest/USD");
-      const data = await response.json();
-      setExchangeRate(data.conversion_rates.ARS);
-    } catch (error) {
-      console.error("Error al obtener la tasa de cambio:", error);
-    }
-  };
-
   // Función para hacer la búsqueda y obtener los libros
-  const fetchBooks = async () => {
+  const fetchBooks = async (append = false) => {
     try {
+      setIsLoading(true); // Empieza a cargar
       let query = searchTerm;
       if (selectedGenres.length > 0) {
         query += `+subject:${selectedGenres.join("+subject:")}`;
       }
 
       const response = await fetch(
-        `https://www.googleapis.com/books/v1/volumes?q=${query}&startIndex=0&maxResults=20`
+        `https://www.googleapis.com/books/v1/volumes?q=${query}&startIndex=${startIndex}&maxResults=10`
       );
       const data = await response.json();
 
@@ -45,14 +38,23 @@ const Catalog = () => {
         const bookPriceInUsd = book.saleInfo?.listPrice?.amount;
         if (!bookPriceInUsd) return false;
 
-        const bookPriceInArs = bookPriceInUsd * exchangeRate;
+        // Convertir el precio de USD a ARS (multiplicando por 1000)
+        const bookPriceInArs = Math.ceil(bookPriceInUsd * 1000);
         return (minPrice ? bookPriceInArs >= minPrice : true) &&
                (maxPrice ? bookPriceInArs <= maxPrice : true);
       });
 
-      setBooks(booksWithPrice || []);
+      if (append) {
+        setBooks((prevBooks) => [...prevBooks, ...(booksWithPrice || [])]);
+      } else {
+        setBooks(booksWithPrice || []);
+      }
+
+      setHasMore(data.items?.length === 10); // Si cargamos 10 libros, hay más
+      setIsLoading(false); // Finaliza la carga
     } catch (error) {
       console.error("Error al obtener los libros:", error);
+      setIsLoading(false); // Finaliza la carga en caso de error
     }
   };
 
@@ -62,7 +64,7 @@ const Catalog = () => {
       const items = books.map((book) => ({
         title: book.volumeInfo.title,
         quantity: 1,
-        unit_price: book.saleInfo?.listPrice?.amount * exchangeRate,
+        unit_price: book.saleInfo?.listPrice?.amount * 1000, // Multiplicamos por 1000 para mostrar en ARS
       }));
 
       const response = await fetch("http://localhost:8080/create_preference", {
@@ -80,22 +82,25 @@ const Catalog = () => {
     }
   };
 
+  const addToCart = async () => {
+    // Lógica para agregar al carrito (si es necesario)
+  };
+
   // Inicializar Mercado Pago con la public key
   useEffect(() => {
     initMercadoPago("APP_USR-1040ad6c-f057-4855-be2d-0bc8e9dd1687", { locale: "es-AR" });
   }, []);
 
-  // Efecto para cargar la tasa de cambio y los libros
+  // Efecto para cargar los libros
   useEffect(() => {
-    fetchExchangeRate();
     if (searchTerm) {
       fetchBooks();
     }
-  }, [searchTerm, selectedGenres, minPrice, maxPrice, exchangeRate]);
+  }, [searchTerm, selectedGenres, minPrice, maxPrice, startIndex]);
 
   const shortenTitle = (title) => title.length > 30 ? title.slice(0, 30) + "..." : title;
 
-  const convertToPesos = (usdPrice) => (usdPrice * 998).toFixed(2);
+  const convertToPesos = (usdPrice) => Math.ceil(usdPrice * 1000); // Convertimos a ARS
 
   const handleGenreChange = (genre) => {
     setSelectedGenres((prevGenres) =>
@@ -105,10 +110,15 @@ const Catalog = () => {
     );
   };
 
+  const loadMoreBooks = () => {
+    setStartIndex(startIndex + 10); // Aumenta el índice en 10
+    fetchBooks(true); // Carga más libros sin reemplazar los existentes
+  };
+
   return (
     <div className="catalog">
       <div className="left-filters">
-        <h2>Generos</h2>
+        <h2>Géneros</h2>
         {genres.map((genre, index) => (
           <div key={index} className="filter">
             <input
@@ -117,7 +127,7 @@ const Catalog = () => {
               onChange={() => handleGenreChange(genre)}
               checked={selectedGenres.includes(genre)}
             />
-            <h4>{genre}</h4>
+            <h4>{genre.charAt(0).toUpperCase() + genre.slice(1)}</h4>
           </div>
         ))}
 
@@ -168,12 +178,12 @@ const Catalog = () => {
                   <p>{book.volumeInfo.authors ? book.volumeInfo.authors.join(", ") : "Autor desconocido"}</p>
                   <p className="price">
                     {book.saleInfo?.listPrice
-                      ? `$${convertToPesos(book.saleInfo.listPrice.amount)} ARS`
+                      ? `${convertToPesos(book.saleInfo.listPrice.amount)} ARS`
                       : "Precio no disponible"}
                   </p>
                   <div className="actions">
                     <button className="buy-button" onClick={createPreference}>Comprar</button>
-                    <button className="cart-button">Agregar al Carrito</button>
+                    <button className="cart-button" onClick={addToCart}>Agregar al Carrito</button>
                   </div>
                 </div>
               </div>
@@ -182,14 +192,15 @@ const Catalog = () => {
             <p>No se encontraron libros con precio disponible.</p>
           )}
         </div>
-      </div>
 
-      {/* Mostrar el Checkout Pro con el ID de preferencia */}
-      {preferenceId && (
-        <div className="checkout-container">
-          <Wallet initialization={{ preferenceId }} />
-        </div>
-      )}
+        {hasMore && !isLoading && (
+          <button className="buy-button" onClick={loadMoreBooks}>
+            Ver más
+          </button>
+        )}
+
+        {isLoading && <p>Cargando...</p>}
+      </div>
     </div>
   );
 };

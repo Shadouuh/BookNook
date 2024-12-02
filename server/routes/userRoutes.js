@@ -81,25 +81,25 @@ const upload = multer({ storage });
 //     }
 // });
 
+//upload.single('file'),
 
 //Register
-router.post('/register', upload.single('file'), async (req, res) => {
+router.post('/register',  async (req, res) => {
     const { user } = req.body;
-    const clave = user.clave;
-    // const clave = anju.encrypt(user.clave);
+    const clave = anju.encrypt(user.clave);
     
     try {
 
-        console.log(req.body);
+        // console.log(req.body);
 
-        const ext = req.file.originalname.split('.').pop();
+        // const ext = req.file.originalname.split('.').pop();
 
-        const img =  `${Date.now()}.${ext}`|| 'default.png';
+        // const img =  `${Date.now()}.${ext}`|| 'default.png';
 
-        console.log(req.file);
-        console.log(req.user);
+        // console.log(req.file);
+        // console.log(req.user);
 
-        helpImg(req.file.path, `resize-${req.file.filename}`, 200);
+        // helpImg(req.file.path, `resize-${req.file.filename}`, 200);
         
 
         const [emailResult] = await conex.execute('SELECT id_login FROM login WHERE email=?', [user.email]);
@@ -125,8 +125,8 @@ router.post('/register', upload.single('file'), async (req, res) => {
         };
 
         const [userResult] = await conex.execute(
-            'INSERT INTO usuarios(nombre, apellido, direccion, fecha_nacimiento, alias, foto_perfil, id_login) VALUES(?, ?, ?, ?, ?, ?, ?)',
-            [user.nombre, user.apellido, user.direccion, user.fecha_nacimiento, user.alias, img, loginResult.insertId]
+            'INSERT INTO usuarios(nombre, apellido, direccion, fecha_nacimiento, alias, id_login) VALUES(?, ?, ?, ?, ?, ?)',
+            [user.nombre, user.apellido, user.direccion, user.fecha_nacimiento, user.alias, loginResult.insertId]
         );
 
         if (userResult.affectedRows == 0) return handleError(res, 'Error al insertar en usuarios');

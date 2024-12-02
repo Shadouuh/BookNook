@@ -13,6 +13,7 @@ init();
 //Insert into cart
 router.post('/insertar', async (req, res) => {
     const { cart } = req.body;
+    const cantidad = cart.cantidad || 1
 
     try {
         const [resultCart] = await conex.execute(
@@ -22,15 +23,10 @@ router.post('/insertar', async (req, res) => {
 
         if (resultCart.length == 0) return handleError(res, 'Error al obtener el id_carrito', null, 404);
 
-        const [resultBook] = await conex.query('SELECT stock FROM libros WHERE stock > 0');
-        if (resultBook.length == 0) return handleError(res, 'No hay stock del libro');
-
         await conex.execute(
-            'INSERT INTO carrito_items(id_carrito, id_libro) VALUES(?, ?)',
-            [resultCart[0].id_carrito, cart.id_libro]
+            'INSERT INTO carrito_items(id_carrito, id_libro, cantidad) VALUES(?, ?, ?)',
+            [resultCart[0].id_carrito, cart.id_libro, cantidad]
         );
-
-        await conex.query(`UPDATE libros SET stock = (${resultBook[0].stock} - 1) WHERE id_libro = ${cart.id_libro}`);
 
         res.status(201).send({ message: 'Se guardo el item en el carrito' });
 
@@ -42,7 +38,6 @@ router.post('/insertar', async (req, res) => {
 //Show items
 router.get('/items/ver/:id', async (req, res) => {
     const { id } = req.params;
-    let resultBooks = [];
 
     try {
         const [resultCart] = await conex.execute(
@@ -57,25 +52,9 @@ router.get('/items/ver/:id', async (req, res) => {
             [resultCart[0].id_carrito]
         );
 
-        console.log(resultItems);
-
         if (resultItems.length == 0) return handleError(res, 'No se encontraron o no hay items', null, 404);
 
-        for (const item of resultItems) {
-            let book = await fetch(`http://localhost:3000/libro/ver/${item.id_libro}`);
-
-            console.log(await book.json());
-
-
-
-//Como chuchas se recibe en el fetch
-
-
-
-            resultBooks.push(book.body);
-        }
-
-        res.status(200).send({ resultBooks });
+        res.status(200).send({ resultItems });
 
     } catch (err) {
         return handleError(res, 'Hubo un error al mostrar los items del carrito', err);
@@ -101,10 +80,15 @@ router.post('/pedir', async (req, res) => {
 
         if (id_carrito.length == 0) return handleError(res, 'No se encontro el carrito', null, 404);
 
-        await conex.execute(
+        const [pedido] = await conex.execute(
             'INSERT INTO pedidos(total, estado, fecha_estimada, id_usuario, id_carrito) VALUES(?, "pendiente", ?, ?,?)',
             [order.total, order.fecha_estimada, order.id_usuario, id_carrito[0].id_carrito]
         );
+
+        await conex.execute(
+            'INSERT INTO transaccion(id_pedido, metodo_pago, num_tarjeta, estado) VALUES(?, ?, ?, "pendiente")',
+            [pedido.insertId, order.metodo_pago, order.num_tarjeta]
+        )
 
         await conex.execute(
             'INSERT INTO carrito(id_usuario, es_actual) VALUES(?, true)',

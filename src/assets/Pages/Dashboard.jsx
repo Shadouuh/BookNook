@@ -3,16 +3,20 @@ import icon from "../Images/Svg/cart.svg";
 import StatCard from "../Components/StatCard";
 import { Link } from "react-router-dom";
 import Graph from "../Components/Graph";
+import dashIcon from "../Images/Svg/dash.svg";
+import salesIcon from "../Images/Svg/sales.svg";
+import employIcon from "../Images/Svg/employ.svg";
+import orderIcon from "../Images/Svg/order.svg";
 const Dashboard = () => {
   return (
     <>
       <div className="margin-p"></div>
       <div className="dash-container">
         <div className="sidebar">
-        <Link to="/Admin/Dashboard">
+          <Link to="/Admin/Dashboard">
             <section>
               <div className="min-sex">
-                <img src={icon} alt="" />
+                <img src={dashIcon} alt="" className="svg-color" />
                 <hr />
               </div>
               <div className="center">
@@ -23,7 +27,7 @@ const Dashboard = () => {
           <Link to="/Admin/Sales">
             <section>
               <div className="min-sex">
-                <img src={icon} alt="" />
+                <img src={salesIcon} alt="" className="svg-color" />
                 <hr />
               </div>
               <div className="center">
@@ -34,7 +38,7 @@ const Dashboard = () => {
           <Link to="/Admin/Employees">
             <section>
               <div className="min-sex">
-                <img src={icon} alt="" />
+                <img src={employIcon} alt="" className="svg-color" />
                 <hr />
               </div>
               <div className="center">
@@ -45,7 +49,7 @@ const Dashboard = () => {
           <Link to="/Admin/Orders">
             <section>
               <div className="min-sex">
-                <img src={icon} alt="" />
+                <img src={orderIcon} alt="" className="svg-color" />
                 <hr />
               </div>
               <div className="center">
@@ -57,16 +61,18 @@ const Dashboard = () => {
         <div className="dash-main">
           <h1>Dashboard</h1>
           <div className="stats-container">
-            <StatCard atributo={"Ganancias Totales:"} valor={"$169.902.134 ARS"} />
+            <StatCard
+              atributo={"Ganancias Totales:"}
+              valor={"$169.902.134 ARS"}
+            />
             <StatCard atributo={"Productos en Stock"} valor={"16.921"} />
             <StatCard atributo={"Empleados:"} valor={"32"} />
             <StatCard atributo={"Ranking Empresa"} valor={"#1567"} />
           </div>
-          <div style={{ padding: '20px', width: '90%', margin: '0 auto' }}>
-      <h2>Ventas Anuales</h2>
-      <Graph/>
-    </div>
-          
+          <div style={{ padding: "20px", width: "90%", margin: "0 auto" }}>
+            <h2>Ventas Anuales</h2>
+            <Graph />
+          </div>
         </div>
       </div>
     </>
