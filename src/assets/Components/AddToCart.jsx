@@ -1,4 +1,10 @@
+import toast from "react-hot-toast";
 const AddToCart = (props) => {
+
+  const notifySuccess = (message) => {
+    toast.success(message);
+    console.log("Todp boem" + message );
+  }
 
   const userConfig = localStorage.getItem("userConfig");
   const userParse = JSON.parse(userConfig);
@@ -22,6 +28,7 @@ const AddToCart = (props) => {
 
       if (response.ok) {
         console.log('Se agrego al carrito');
+        notifySuccess("Se agrego Correctamente al carrito");
       }
     } catch (error) {
       console.error('Al intentar agregar al carrito', error);

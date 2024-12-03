@@ -1,31 +1,87 @@
 import { useState, useEffect } from "react";
 import searchIcon from "../Images/Svg/search.svg";
 import "./Styles/Catalog.css";
-import { initMercadoPago, Wallet } from "@mercadopago/sdk-react"; // SDK de Mercado Pago
-
 import AddToCart from "./addToCart";
 
 const Catalog = () => {
+  // # -----> Mercado Pago Checkout <----- # //
+  const createCheckout = async (title, price, imageUrl) => {
+    const accessToken =
+      "APP_USR-3491276126078984-120209-86c0f97353033dd82faa0835a94d5e66-2115182646"; 
+
+    const validPrice = Number(price) || 0; 
+    const validImageUrl = imageUrl || "default_image_url.jpg"; 
+    const body = {
+      items: [
+        {
+          title: title,
+          quantity: 1,
+          currency_id: "ARS",
+          unit_price: validPrice,
+          picture_url: validImageUrl,
+        },
+      ],
+      back_urls: {
+        success: "https://www.tusitio.com/success",
+        failure: "https://www.tusitio.com/failure",
+        pending: "https://www.tusitio.com/pending",
+      },
+      auto_return: "approved",
+    };
+
+    try {
+      const response = await fetch(
+        "https://api.mercadopago.com/checkout/preferences",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify(body),
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.init_point) {
+        // Redirige al link de pago
+        window.open(data.init_point, "_blank");
+      } else {
+        console.error("Error al generar el link de pago:", data);
+      }
+    } catch (error) {
+      console.error("Error en la solicitud:", error);
+    }
+  };
+  // # -----> Mercado Pago Cart Checkout <----- # //
+
   const [books, setBooks] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("El Rubius");
+  const [searchTerm, setSearchTerm] = useState("Dross Rotzank");
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [selectedGenres, setSelectedGenres] = useState([]);
-  const [preferenceId, setPreferenceId] = useState(null); // Estado para almacenar el ID de la preferencia
-  const [startIndex, setStartIndex] = useState(0); // Estado para el índice de los libros
-  const [isLoading, setIsLoading] = useState(false); // Estado para el cargando
-  const [hasMore, setHasMore] = useState(true); // Estado para saber si hay más libros para cargar
+  const [preferenceId, setPreferenceId] = useState(null);
+  const [startIndex, setStartIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
 
-  // Géneros en inglés para usar con la API de Google Books
   const genres = [
-    "fiction", "drama", "adventure", "science fiction", "fantasy",
-    "romance", "horror", "mystery", "history", "biography"
+    "fiction",
+    "drama",
+    "adventure",
+    "science fiction",
+    "fantasy",
+    "romance",
+    "horror",
+    "mystery",
+    "history",
+    "biography",
   ];
 
-  // Función para hacer la búsqueda y obtener los libros
   const fetchBooks = async (append = false) => {
     try {
-      setIsLoading(true); // Empieza a cargar
+      setIsLoading(true);
       let query = searchTerm;
       if (selectedGenres.length > 0) {
         query += `+subject:${selectedGenres.join("+subject:")}`;
@@ -40,10 +96,11 @@ const Catalog = () => {
         const bookPriceInUsd = book.saleInfo?.listPrice?.amount;
         if (!bookPriceInUsd) return false;
 
-        // Convertir el precio de USD a ARS (multiplicando por 1000)
         const bookPriceInArs = Math.ceil(bookPriceInUsd * 1000);
-        return (minPrice ? bookPriceInArs >= minPrice : true) &&
-               (maxPrice ? bookPriceInArs <= maxPrice : true);
+        return (
+          (minPrice ? bookPriceInArs >= minPrice : true) &&
+          (maxPrice ? bookPriceInArs <= maxPrice : true)
+        );
       });
 
       if (append) {
@@ -52,53 +109,25 @@ const Catalog = () => {
         setBooks(booksWithPrice || []);
       }
 
-      setHasMore(data.items?.length === 10); // Si cargamos 10 libros, hay más
-      setIsLoading(false); // Finaliza la carga
+      setHasMore(data.items?.length === 10);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error al obtener los libros:", error);
-      setIsLoading(false); // Finaliza la carga en caso de error
+      setIsLoading(false); 
     }
   };
 
-  // Crear preferencia de pago en el backend
-  const createPreference = async () => {
-    try {
-      const items = books.map((book) => ({
-        title: book.volumeInfo.title,
-        quantity: 1,
-        unit_price: book.saleInfo?.listPrice?.amount * 1000, // Multiplicamos por 1000 para mostrar en ARS
-      }));
 
-      const response = await fetch("http://localhost:8080/create_preference", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ items }),
-      });
-
-      const data = await response.json();
-      setPreferenceId(data.id); // Guardamos el ID de la preferencia
-    } catch (error) {
-      console.error("Error al crear la preferencia:", error);
-    }
-  };
-
-  // Inicializar Mercado Pago con la public key
-  useEffect(() => {
-    initMercadoPago("APP_USR-1040ad6c-f057-4855-be2d-0bc8e9dd1687", { locale: "es-AR" });
-  }, []);
-
-  // Efecto para cargar los libros
   useEffect(() => {
     if (searchTerm) {
       fetchBooks();
     }
   }, [searchTerm, selectedGenres, minPrice, maxPrice, startIndex]);
 
-  const shortenTitle = (title) => title.length > 30 ? title.slice(0, 30) + "..." : title;
+  const shortenTitle = (title) =>
+    title.length > 30 ? title.slice(0, 30) + "..." : title;
 
-  const convertToPesos = (usdPrice) => Math.ceil(usdPrice * 1000); // Convertimos a ARS
+  const convertToPesos = (usdPrice) => Math.ceil(usdPrice * 1000);
 
   const handleGenreChange = (genre) => {
     setSelectedGenres((prevGenres) =>
@@ -109,8 +138,8 @@ const Catalog = () => {
   };
 
   const loadMoreBooks = () => {
-    setStartIndex(startIndex + 10); // Aumenta el índice en 10
-    fetchBooks(true); // Carga más libros sin reemplazar los existentes
+    setStartIndex(startIndex + 10);
+    fetchBooks(true);
   };
 
   return (
@@ -168,21 +197,47 @@ const Catalog = () => {
             books.map((book, index) => (
               <div key={index} className="product-card">
                 <img
-                  src={book.volumeInfo.imageLinks?.thumbnail || "default_image_url.jpg"}
+                  src={
+                    book.volumeInfo.imageLinks?.thumbnail ||
+                    "default_image_url.jpg"
+                  }
                   alt={book.volumeInfo.title}
                 />
                 <div className="product-card-info">
                   <h4>{shortenTitle(book.volumeInfo.title)}</h4>
-                  <p>{book.volumeInfo.authors ? book.volumeInfo.authors.join(", ") : "Autor desconocido"}</p>
+                  <p>
+                    {book.volumeInfo.authors
+                      ? book.volumeInfo.authors.join(", ")
+                      : "Autor desconocido"}
+                  </p>
                   <p className="price">
+                    $
                     {book.saleInfo?.listPrice
                       ? `${convertToPesos(book.saleInfo.listPrice.amount)} ARS`
                       : "Precio no disponible"}
                   </p>
+
                   <div className="actions">
-                    {/* <button className="buy-button" onClick={createPreference}>Comprar</button> */}
-                    {book.saleInfo?.listPrice && (<AddToCart id_libro={book.id} />)}
-                    {/* <button className="cart-button" onClick={(e) => }>Agregar al Carrito</button> */}
+                    <button
+                      className="buy-button"
+                      id="mp"
+                      onClick={() => {
+                        const price =
+                          convertToPesos(
+                            Number(book.saleInfo?.listPrice?.amount)
+                          ) || 0;
+                        const imageUrl =
+                          book.volumeInfo.imageLinks?.thumbnail ||
+                          "default_image_url.jpg";
+                        createCheckout(book.volumeInfo.title, price, imageUrl);
+                      }}
+                    >
+                      Comprar
+                    </button>
+
+                    {book.saleInfo?.listPrice && (
+                      <AddToCart id_libro={book.id} />
+                    )}
                   </div>
                 </div>
               </div>

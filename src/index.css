@@ -96,3 +96,53 @@ outline: none;
 .text{
   font-size: 24px;
 }
+#mp{
+  background-color: #657ED4;
+  color: white;
+  border: none;
+  transition: ease-in-out .1s;
+}
+#mp:hover{
+  transform: scale(1.02);
+}
+#mp:active{
+  transform: scale(1.00);
+}
+#mp2{
+  background-color: #2b51ce;
+  color: white;
+  border: none;
+  transition: ease-in-out .1s;
+}
+#mp2:hover{
+  transform: scale(1.02);
+}
+#mp2:active{
+  transform: scale(1.00);
+}
+.table{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.addBTN{
+  margin-bottom: 10px;
+  align-self: flex-end;
+  width: fit-content;
+  padding: 10px;
+  border-radius: 50%;
+  background-color: transparent;
+  border: solid 1px black;
+  transition: ease-in-out .2s;
+}
+.addBTN:hover{
+  transform: scale(1.02);
+  cursor: pointer;
+}
+.addBTN:active{
+  transform: scale(1);
+}
+.addBTN img{
+  height: 4vh;
+}

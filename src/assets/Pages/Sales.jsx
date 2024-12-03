@@ -71,6 +71,10 @@ const Sales = () => {
         <div className="dash-main">
           <div className="table-container">
             <h1>Ventas</h1>
+            <div className="stats-container">
+              <StatCard atributo={"Ventas anuales"} valor={"321"} />
+              <StatCard atributo={"Ganancias Totales:"} valor={"$5.000.230"} />
+            </div>
             <div className="table">
               <table>
                 <thead>
@@ -107,10 +111,6 @@ const Sales = () => {
                 </tbody>
               </table>
             </div>
-          </div>
-          <div className="stats-container">
-            <StatCard atributo={"Ventas anuales"} valor={"321"} />
-            <StatCard atributo={"Ganancias Totales:"} valor={"$5.000.230"} />
           </div>
         </div>
       </div>

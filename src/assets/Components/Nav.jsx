@@ -9,13 +9,17 @@ import exitIcon from "../Images/Svg/Exit.svg";
 import transIcon from "../Images/Svg/Translate.svg";
 import adminIcon from "../Images/Svg/admin.svg";
 import logTwIcon from "../Images/Svg/loginTwo.svg";
+import { useTranslation } from "react-i18next";
 const Nav = () => {
   const [menu, toggleMenu] = useState(false);
   const [showNav, setShowNav] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isLogged, setIsLogged] = useState(false);
   const [userConfig, setUserConfig] = useState(null);
-
+  const { i18n } = useTranslation();
+  const changeEnEs = (language) => {
+    i18n.changeLanguage(language);
+  };
   useEffect(() => {
     const storedUserConfig = localStorage.getItem("userConfig");
     // console.log("UserConfig desde localStorage:", storedUserConfig); // Verificar qué se guarda en localStorage
@@ -105,9 +109,9 @@ const Nav = () => {
           </div>
           <div className="menu">
             <Link to="Cart">
-            <button>
-              <img src={cartIcon} alt="" />
-            </button>
+              <button>
+                <img src={cartIcon} alt="" />
+              </button>
             </Link>
             <button onClick={() => toggleMenu(!menu)}>
               <img src={userIcon} alt="" />
@@ -173,11 +177,30 @@ const Nav = () => {
           <h4>Cambiar Idioma</h4>
           <section>
             <div className="min-sex">
-              <img src={transIcon} alt="" className="svg-color" />
+              <img
+                src={transIcon}
+                alt=""
+                className="svg-color"
+                onClick={changeEnEs("es")}
+              />
               <hr />
             </div>
             <div className="center">
               <h4>Español</h4>
+            </div>
+          </section>
+          <section>
+            <div className="min-sex">
+              <img
+                src={transIcon}
+                alt=""
+                className="svg-color"
+                onClick={changeEnEs("en")}
+              />
+              <hr />
+            </div>
+            <div className="center">
+              <h4>English</h4>
             </div>
           </section>
         </div>
