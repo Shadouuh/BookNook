@@ -7,6 +7,13 @@ import orderIcon from "../Images/Svg/order.svg";
 import { Link } from "react-router-dom";
 
 const Employees = () => {
+
+  const userConfig = localStorage.getItem("userConfig");
+
+  const userParse = JSON.parse(userConfig);
+  const tipo = userParse?.data?.login[0]?.tipo;
+  console.log('El tipo: ', tipo)
+
   const [editBtn, setEditBtn] = useState(false);
 
   const [id, setId] = useState(0);
@@ -176,7 +183,7 @@ const Employees = () => {
               </div>
             </section>
           </Link>
-          <Link to="/Admin/Sales">
+          {tipo != 'repartidor' && (<Link to="/Admin/Sales">
             <section>
               <div className="min-sex">
                 <img src={salesIcon} alt="" className="svg-color" />
@@ -186,29 +193,34 @@ const Employees = () => {
                 <h4>Ventas</h4>
               </div>
             </section>
-          </Link>
-          <Link to="/Admin/Employees">
-            <section>
-              <div className="min-sex">
-                <img src={employIcon} alt="" className="svg-color" />
-                <hr />
-              </div>
-              <div className="center">
-                <h4>Empleados</h4>
-              </div>
-            </section>
-          </Link>
-          <Link to="/Admin/Orders">
-            <section>
-              <div className="min-sex">
-                <img src={orderIcon} alt="" className="svg-color" />
-                <hr />
-              </div>
-              <div className="center">
-                <h4>Orders</h4>
-              </div>
-            </section>
-          </Link>
+          </Link>)}
+
+          {(tipo != 'repartidor' && tipo != 'empleado') && (
+            <Link to="/Admin/Employees">
+              <section>
+                <div className="min-sex">
+                  <img src={employIcon} alt="" className="svg-color" />
+                  <hr />
+                </div>
+                <div className="center">
+                  <h4>Empleados</h4>
+                </div>
+              </section>
+            </Link>
+          )}
+
+          {tipo != 'empleado' &&
+            (<Link to="/Admin/Orders">
+              <section>
+                <div className="min-sex">
+                  <img src={orderIcon} alt="" className="svg-color" />
+                  <hr />
+                </div>
+                <div className="center">
+                  <h4>Orders</h4>
+                </div>
+              </section>
+            </Link>)}
         </div>
         <div className="dash-main">
           <div className="table-container">
