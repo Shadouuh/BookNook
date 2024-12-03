@@ -1,103 +1,113 @@
-.catalog{
+/* Contenedor principal */
+.catalog {
     width: 95%;
     min-height: 100vh;
-    height: fit-content;
     padding: 30px;
     display: flex;
-    
     box-shadow: 0 0px 10px 10px rgba(0, 0, 0, 0.25);
     border-radius: 10px;
     margin: 30px;
+    background-color: #f5f5f5; /* Fondo claro para contrastar */
 }
-.left-filters{
+
+/* Filtros de la izquierda */
+.left-filters {
     width: 28%;
-    border: solid black 2px;
+    border: solid #657ED4 2px;
     height: 100%;
     padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    border-radius: 7px;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil */
 }
-.filter{
+
+/* Estilo de los filtros */
+.filter, .filter-price {
     display: flex;
     gap: 10px;
     align-items: center;
     padding: 10px 14px;
-    border: solid black 2px;
-    margin: 5px 0px;
+    border: solid #657ED4 2px;
+    margin: 10px 0;
     width: 100%;
-    border-radius: 4px;
-    
+    border-radius: 5px;
+    background-color: #f9f9f9; /* Fondo claro para filtros */
 }
-.filter-price{
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    padding: 10px 14px;
-    border: solid black 2px;
-    margin: 5px 0px;
-    width: 100%;
-    border-radius: 4px;
+
+.filter h4, .filter-price h4 {
+    color: #2b51ce; /* Título en azul oscuro */
 }
-.filter-price input{
+
+/* Input de precios */
+.filter-price input {
     padding: 5px;
     font-size: 14px;
+    border: solid 1px #657ED4;
+    border-radius: 5px;
 }
+
+/* Sección de productos */
 .right-products {
-    display:flex;
+    display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 70%;
     align-items: center;
-    padding: 10px;
+    padding: 20px;
 }
+
 .right-products .search-container {
     width: 50vw;
     margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-/* Productos */
-.products-container{
 
+
+
+/* Productos */
+.products-container {
     height: 100%;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     width: 100%;
     padding: 15px;
+    gap: 20px;
 }
-.products-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-  }
-  
-  .product-card {
+
+.product-card {
     background-color: #fff;
     border-radius: 12px;
     width: 220px;
-    height: fit-content; 
+    height: fit-content;
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
     display: flex;
     flex-direction: column;
-  }
-  
-  .product-card:hover {
+    border: 1px solid #657ED4; /* Borde de color azul */
+}
+
+.product-card:hover {
     transform: translateY(-3px);
     box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.2);
-  }
-  
-  .product-card img {
+}
+
+/* Imagen de producto */
+.product-card img {
     width: 100%;
-    height: 200px; 
+    height: 200px;
     object-fit: cover;
     border-bottom: 2px solid #f2f2f2;
-  }
-  
-  .product-card-info {
+}
+
+/* Información del producto */
+.product-card-info {
     padding: 15px;
     display: flex;
     align-items: center;
@@ -105,55 +115,146 @@
     justify-content: space-between;
     flex-grow: 1;
     text-align: center;
-  }
-  
-  .product-card-info h4 {
+}
+
+.product-card-info h4 {
     font-size: 16px;
     font-weight: bold;
     color: #333;
     margin-bottom: 10px;
-  }
-  
-  .product-card-info p {
+}
+
+.product-card-info p {
     font-size: 14px;
     color: #666;
     margin-bottom: 10px;
-  }
-  
-  .product-card-info .price {
+}
+
+.product-card-info .price {
     font-size: 16px;
     font-weight: bold;
     padding: 5px;
     border-radius: 10px 0px;
-    color: black;
-    border: solid black 1px;
+    color: white;
+    background-color: #2b51ce; /* Fondo azul oscuro para el precio */
+    border: solid 1px #2b51ce;
     width: fit-content;
-  }
-  
-  .actions {
+}
+
+/* Botones de acción */
+.actions {
     display: flex;
     flex-direction: column;
     gap: 7px;
     justify-content: space-between;
-  }
-  
-  .buy-button,
-  .cart-button {
-    background-color: transparent;
-    color: black;
-    border: solid 2px black;
+}
+
+/* Estilo para botones */
+.buy-button, .cart-button {
+    background-color: #2b51ce;
+    color: white;
+    border: solid 2px #2b51ce;
     padding: 8px 12px;
     font-size: 16px;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
-  }
-  
-  .buy-button:hover,
-  .cart-button:hover {
-    background-color: black;
-    color: white;
-  }
+}
 
-  
-  
+.buy-button:hover, .cart-button:hover {
+    background-color: #657ED4; /* Cambio a color más claro al hacer hover */
+    border: solid 2px #657ED4;
+    color: #fff;
+}
+/* Estilo de los filtros (checkboxes) */
+.filter {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 14px;
+  border: solid #657ED4 2px;
+  margin: 10px 0;
+  width: 100%;
+  border-radius: 5px;
+  background-color: #f9f9f9; /* Fondo claro para filtros */
+  transition: background-color 0.3s ease;
+}
+
+.filter:hover {
+  background-color: #f2f2f2; /* Fondo más oscuro al pasar el mouse */
+}
+
+/* Estilo del título (Géneros) */
+.filter h4 {
+  color: #2b51ce; /* Título en azul oscuro */
+  font-weight: 600;
+}
+
+/* Estilo del checkbox */
+.filter input[type="checkbox"] {
+  appearance: none; /* Elimina el estilo predeterminado del checkbox */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #657ED4;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Estilo cuando el checkbox está marcado */
+.filter input[type="checkbox"]:checked {
+  background-color: #2b51ce;
+  border-color: #2b51ce;
+}
+
+.filter input[type="checkbox"]:checked::after {
+  content: "";
+  top: 50%;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  background-color: white;
+  border-radius: 50%;
+}
+
+/* Etiqueta del checkbox */
+.filter label {
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Estilo para el grupo de filtros de precios */
+.filter-price {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 14px;
+  border: solid #657ED4 2px;
+  margin: 10px 0;
+  width: 100%;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.filter-price:hover {
+  background-color: #f2f2f2;
+}
+
+/* Estilo del input de rango de precios */
+.filter-price input {
+  padding: 8px;
+  font-size: 14px;
+  border: solid 1px #657ED4;
+  border-radius: 5px;
+  width: 55%;
+  text-align: center;
+}

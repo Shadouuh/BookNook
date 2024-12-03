@@ -95,3 +95,27 @@ outline: none;
 .text{
   font-size: 24px;
 }
+#mp{
+  background-color: #657ED4;
+  color: white;
+  border: none;
+  transition: ease-in-out .1s;
+}
+#mp:hover{
+  transform: scale(1.02);
+}
+#mp:active{
+  transform: scale(1.00);
+}
+#mp2{
+  background-color: #2b51ce;
+  color: white;
+  border: none;
+  transition: ease-in-out .1s;
+}
+#mp2:hover{
+  transform: scale(1.02);
+}
+#mp2:active{
+  transform: scale(1.00);
+}

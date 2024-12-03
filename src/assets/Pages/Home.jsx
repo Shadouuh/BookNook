@@ -188,7 +188,7 @@ const Home = () => {
                             : "Precio no disponible"}
                         </p>
                         <Link to="/Catalog">
-                          <p className="buy-button">Ver mas</p>
+                          <p className="show-btn">Ver mas</p>
                         </Link>
                       </div>
                     </div>

@@ -55,6 +55,21 @@
     color:#657ED4;
     font-size: 55px;
 }
+.show-btn{
+    border: solid black 1px;
+    padding: 5px 10px;
+    border-radius: 7px 0px;
+    color: black;
+    transition: ease-in-out .2s;
+}
+.show-btn:hover{
+    transform: scale(1.01);
+    color: white;
+    background-color: black;
+}
+.show-btn:active{
+    transform: scale(0.99);
+}
 #violetMedium {
     color:#657ED4;
     font-size: 40px;
