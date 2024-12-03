@@ -7,7 +7,27 @@ import dashIcon from "../Images/Svg/dash.svg";
 import salesIcon from "../Images/Svg/sales.svg";
 import employIcon from "../Images/Svg/employ.svg";
 import orderIcon from "../Images/Svg/order.svg";
+import coffeeIcon from "../Images/Common/cofi.png";
+
 const Dashboard = () => {
+
+  const userConfig = localStorage.getItem("userConfig");
+
+  const userParse = JSON.parse(userConfig);
+  const tipo = userParse?.data?.login[0]?.tipo;
+  console.log('El tipo: ', tipo)
+
+  if (tipo == 'cliente') {
+    return (
+      <div className="margin">
+        <div className="error">
+          <img src={coffeeIcon} alt="" className="last" />
+          <h1>Zona unicamente para personal</h1>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="margin-p"></div>
@@ -24,7 +44,7 @@ const Dashboard = () => {
               </div>
             </section>
           </Link>
-          <Link to="/Admin/Sales">
+          {tipo != 'repartidor' && (<Link to="/Admin/Sales">
             <section>
               <div className="min-sex">
                 <img src={salesIcon} alt="" className="svg-color" />
@@ -34,29 +54,35 @@ const Dashboard = () => {
                 <h4>Ventas</h4>
               </div>
             </section>
-          </Link>
-          <Link to="/Admin/Employees">
-            <section>
-              <div className="min-sex">
-                <img src={employIcon} alt="" className="svg-color" />
-                <hr />
-              </div>
-              <div className="center">
-                <h4>Empleados</h4>
-              </div>
-            </section>
-          </Link>
-          <Link to="/Admin/Orders">
-            <section>
-              <div className="min-sex">
-                <img src={orderIcon} alt="" className="svg-color" />
-                <hr />
-              </div>
-              <div className="center">
-                <h4>Orders</h4>
-              </div>
-            </section>
-          </Link>
+          </Link>)}
+
+          {(tipo != 'repartidor' && tipo != 'empleado') && (
+            <Link to="/Admin/Employees">
+              <section>
+                <div className="min-sex">
+                  <img src={employIcon} alt="" className="svg-color" />
+                  <hr />
+                </div>
+                <div className="center">
+                  <h4>Empleados</h4>
+                </div>
+              </section>
+            </Link>
+          )}
+
+          {tipo != 'empleado' &&
+            (<Link to="/Admin/Orders">
+              <section>
+                <div className="min-sex">
+                  <img src={orderIcon} alt="" className="svg-color" />
+                  <hr />
+                </div>
+                <div className="center">
+                  <h4>Orders</h4>
+                </div>
+              </section>
+            </Link>)}
+
         </div>
         <div className="dash-main">
           <h1>Dashboard</h1>
