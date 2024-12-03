@@ -13,7 +13,6 @@ init();
 //Insert into cart
 router.post('/insertar', async (req, res) => {
     const { cart } = req.body;
-    const cantidad = cart.cantidad || 1
 
     try {
         const [resultCart] = await conex.execute(
@@ -25,7 +24,7 @@ router.post('/insertar', async (req, res) => {
 
         await conex.execute(
             'INSERT INTO carrito_items(id_carrito, id_libro, cantidad) VALUES(?, ?, ?)',
-            [resultCart[0].id_carrito, cart.id_libro, cantidad]
+            [resultCart[0].id_carrito, cart.id_libro, cart.cantidad]
         );
 
         res.status(201).send({ message: 'Se guardo el item en el carrito' });
@@ -48,7 +47,7 @@ router.get('/items/ver/:id', async (req, res) => {
         if (resultCart.length == 0) return handleError(res, 'No se encontro el carrito actual', null, 404);
 
         const [resultItems] = await conex.execute(
-            'SELECT id_libro FROM carrito_items WHERE id_carrito = ?',
+            'SELECT id_libro, cantidad FROM carrito_items WHERE id_carrito = ?',
             [resultCart[0].id_carrito]
         );
 
@@ -106,5 +105,56 @@ router.post('/pedir', async (req, res) => {
         return handleError(res, 'Hubo un error en el carrito', err);
     }
 });
+
+//Delete item
+router.delete('/borrar/:id_libro/:id_usuario', async (req, res) => {
+    const { id_libro, id_usuario } = req.params;
+    
+    try {
+        console.log('Intentando');
+
+        const [id_carrito] = await conex.execute(
+            'SELECT id_carrito FROM carrito WHERE id_usuario = ? AND es_actual = true',
+            [id_usuario]
+        );
+    
+        if (id_carrito.length == 0) return handleError(res, 'No se encontro el carrito', null, 404);
+
+        await conex.execute(
+            'DELETE FROM carrito_items WHERE id_libro = ? AND id_carrito = ?',
+            [id_libro, id_carrito[0].id_carrito]
+        );
+        
+        res.status(200).send({ message: 'Se elimino el libro con el id' + id_libro });
+
+    } catch (err) {
+        return handleError(res, 'Error al intentar eliminar el libro', err);
+    }
+});
+
+//Update cart
+router.put('/actualizar', async (req, res) => {
+    const { id_libro, id_usuario, cantidad } = req.body; 
+
+    try {
+        const [id_carrito] = await conex.execute(
+            'SELECT id_carrito FROM carrito WHERE id_usuario = ? AND es_actual = true',
+            [id_usuario]
+        );
+    
+        if (id_carrito.length == 0) return handleError(res, 'No se encontro el carrito', null, 404);
+
+        await conex.execute(
+            'UPDATE carrito_items SET cantidad=? WHERE id_libro = ? AND id_carrito = ?',
+            [cantidad, id_libro, id_carrito[0].id_carrito]
+        );
+        
+        res.status(200).send({ message: 'Se actualizo la cantidad' + id_libro });
+
+    } catch (err) {
+        return handleError(res, 'Error al intentar actualizar la cantidad', err);
+    }
+});
+
 
 module.exports = router;
