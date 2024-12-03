@@ -119,3 +119,29 @@ outline: none;
 #mp2:active{
   transform: scale(1.00);
 }
+.table{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.addBTN{
+  margin-bottom: 10px;
+  align-self: flex-end;
+  width: fit-content;
+  padding: 10px;
+  border-radius: 50%;
+  background-color: transparent;
+  border: solid 1px black;
+  transition: ease-in-out .2s;
+}
+.addBTN:hover{
+  transform: scale(1.02);
+  cursor: pointer;
+}
+.addBTN:active{
+  transform: scale(1);
+}
+.addBTN img{
+  height: 4vh;
+}

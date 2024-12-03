@@ -57,6 +57,7 @@ const Orders = () => {
           </Link>
         </div>
         <div className="dash-main">
+          <h1>Orders</h1>
           <div className="stats-container">
             <StatCard atributo={"Pendientes"} valor={"31"} />
             <StatCard atributo={"Realizados del Mes"} valor={"124"} />
@@ -64,7 +65,6 @@ const Orders = () => {
           </div>
           <div className="table-container">
             <h1>Orders</h1>
-
             <div className="table">
               <table>
                 <thead>

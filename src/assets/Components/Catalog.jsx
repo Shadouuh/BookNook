@@ -1,19 +1,16 @@
 import { useState, useEffect } from "react";
 import searchIcon from "../Images/Svg/search.svg";
 import "./Styles/Catalog.css";
-import { initMercadoPago, Wallet } from "@mercadopago/sdk-react"; // SDK de Mercado Pago
-
 import AddToCart from "./addToCart";
 
 const Catalog = () => {
   // # -----> Mercado Pago Checkout <----- # //
   const createCheckout = async (title, price, imageUrl) => {
     const accessToken =
-      "APP_USR-3491276126078984-120209-86c0f97353033dd82faa0835a94d5e66-2115182646"; // Reemplaza con tu Access Token
+      "APP_USR-3491276126078984-120209-86c0f97353033dd82faa0835a94d5e66-2115182646"; 
 
-    const validPrice = Number(price) || 0; // Asegúrate de que sea un número válido
-    const validImageUrl = imageUrl || "default_image_url.jpg"; // Si no hay imagen, usa la predeterminada
-
+    const validPrice = Number(price) || 0; 
+    const validImageUrl = imageUrl || "default_image_url.jpg"; 
     const body = {
       items: [
         {
@@ -116,40 +113,11 @@ const Catalog = () => {
       setIsLoading(false);
     } catch (error) {
       console.error("Error al obtener los libros:", error);
-      setIsLoading(false); // Finaliza la carga en caso de error
+      setIsLoading(false); 
     }
   };
 
-  // Crear preferencia de pago en el backend
-  const createPreference = async () => {
-    try {
-      const items = books.map((book) => ({
-        title: book.volumeInfo.title,
-        quantity: 1,
-        unit_price: book.saleInfo?.listPrice?.amount * 1000, // Multiplicamos por 1000 para mostrar en ARS
-      }));
 
-      const response = await fetch("http://localhost:8080/create_preference", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ items }),
-      });
-
-      const data = await response.json();
-      setPreferenceId(data.id); // Guardamos el ID de la preferencia
-    } catch (error) {
-      console.error("Error al crear la preferencia:", error);
-    }
-  };
-
-  // Inicializar Mercado Pago con la public key
-  useEffect(() => {
-    initMercadoPago("APP_USR-1040ad6c-f057-4855-be2d-0bc8e9dd1687", { locale: "es-AR" });
-  }, []);
-
-  // Efecto para cargar los libros
   useEffect(() => {
     if (searchTerm) {
       fetchBooks();
@@ -250,9 +218,26 @@ const Catalog = () => {
                   </p>
 
                   <div className="actions">
-                    {/* <button className="buy-button" onClick={createPreference}>Comprar</button> */}
-                    {book.saleInfo?.listPrice && (<AddToCart id_libro={book.id} />)}
-                    {/* <button className="cart-button" onClick={(e) => }>Agregar al Carrito</button> */}
+                    <button
+                      className="buy-button"
+                      id="mp"
+                      onClick={() => {
+                        const price =
+                          convertToPesos(
+                            Number(book.saleInfo?.listPrice?.amount)
+                          ) || 0;
+                        const imageUrl =
+                          book.volumeInfo.imageLinks?.thumbnail ||
+                          "default_image_url.jpg";
+                        createCheckout(book.volumeInfo.title, price, imageUrl);
+                      }}
+                    >
+                      Comprar
+                    </button>
+
+                    {book.saleInfo?.listPrice && (
+                      <AddToCart id_libro={book.id} />
+                    )}
                   </div>
                 </div>
               </div>

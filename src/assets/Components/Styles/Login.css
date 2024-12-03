@@ -95,7 +95,18 @@ form {
     margin-bottom: 10px;
     
   }
-  
+  #employ{
+    box-shadow: 0 0px 10px 10px rgba(0, 0, 0, 0.07);
+    border-radius: 0;
+    width: 100%;
+    margin: 10px;
+  }
+  #employ input{
+    width: 200px;
+  }
+  #employ button{
+    margin: 0px 10px;
+  }
   input:focus {
     border-color: #ffafcc;
     outline: none;

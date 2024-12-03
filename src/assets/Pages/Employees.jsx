@@ -8,30 +8,18 @@ import { Link } from "react-router-dom";
 
 const Employees = () => {
   const [editBtn, setEditBtn] = useState(false);
-
   const [id, setId] = useState(0);
-
-  const [employees, setEmployees] = useState([
-    {
-      id_empleado: "",
-      dni: "",
-      nombre: "",
-      apellido: "",
-      area: "",
-      id_sede: "",
-    },
-  ]);
+  const [employees, setEmployees] = useState([]);
+  const [showInsertForm, setShowInsertForm] = useState(false);
+  const [showEditForm, setShowEditForm] = useState(false);
 
   const fetchEmployees = async () => {
-    let employeesReady = [];
-
     try {
       const response = await fetch("http://localhost:3000/api/empleados");
-      let employeesData = await response.json();
+      const employeesData = await response.json();
 
       if (response.ok) {
-        employeesReady = employeesData.resultados;
-        setEmployees(employeesReady);
+        setEmployees(employeesData.resultados);
       }
     } catch (error) {
       console.log("Error al buscar los empleados", error);
@@ -51,7 +39,8 @@ const Employees = () => {
       });
 
       if (response.ok) {
-        console.log("Se inserto el empleado");
+        console.log("Empleado insertado");
+        fetchEmployees(); // Refrescar lista
       }
 
       setFormData({
@@ -62,33 +51,32 @@ const Employees = () => {
         id_sede: "",
       });
     } catch (error) {
-      console.log("Error al inserar el empleado", error);
+      console.log("Error al insertar el empleado", error);
     }
   };
 
   const EmployessToForm = async (employee) => {
     try {
-      setEditBtn(true);
-
-      setId(employee.id_empleado);
-
-      console.log("El empleado: ", employee);
+      setEditBtn(true); // Activa el modo edición
+      setId(employee.id_empleado); // Guarda el ID del empleado seleccionado
       setFormData({
         dni: employee.dni,
         nombre: employee.nombre,
         apellido: employee.apellido,
         area: employee.area,
         id_sede: employee.id_sede,
-      });
+      }); // Llena el formulario con los datos del empleado
+      setShowInsertForm(true); // Muestra el formulario de edición
     } catch (error) {
-      console.log("Error al actualizar el empleado", error);
+      console.log("Error al cargar el empleado para editar", error);
     }
   };
+  
 
   const editEmployees = async () => {
     try {
       const response = await fetch(
-        "http://localhost:3000/api/empleados/" + id,
+        `http://localhost:3000/api/empleados/${id}`,
         {
           method: "PUT",
           headers: {
@@ -99,7 +87,8 @@ const Employees = () => {
       );
 
       if (response.ok) {
-        console.log("Se actualizo el empleado");
+        console.log("Empleado actualizado");
+        fetchEmployees(); // Refrescar lista
       }
 
       setFormData({
@@ -109,6 +98,7 @@ const Employees = () => {
         area: "",
         id_sede: "",
       });
+      setShowEditForm(false);
     } catch (error) {
       console.log("Error al actualizar el empleado", error);
     }
@@ -117,7 +107,7 @@ const Employees = () => {
   const deleteEmployees = async (id_empleado) => {
     try {
       const response = await fetch(
-        "http://localhost:3000/api/empleados/" + id_empleado,
+        `http://localhost:3000/api/empleados/${id_empleado}`,
         {
           method: "DELETE",
         }
@@ -125,14 +115,14 @@ const Employees = () => {
 
       if (response.ok) {
         console.log(`Empleado con ID ${id_empleado} eliminado`);
+        fetchEmployees(); // Refrescar lista
       }
     } catch (error) {
       console.log("Error al borrar el empleado", error);
     }
   };
 
-  const cancel = (e) => {
-    e.preventDefault();
+  const cancel = () => {
     setEditBtn(false);
     setFormData({
       dni: "",
@@ -141,6 +131,8 @@ const Employees = () => {
       area: "",
       id_sede: "",
     });
+    setShowEditForm(false);
+    setShowInsertForm(false);
   };
 
   const [formData, setFormData] = useState({
@@ -158,7 +150,7 @@ const Employees = () => {
 
   useEffect(() => {
     fetchEmployees();
-  }, [formData, deleteEmployees]);
+  }, []);
 
   return (
     <>
@@ -213,7 +205,11 @@ const Employees = () => {
         <div className="dash-main">
           <div className="table-container">
             <h1>Employees</h1>
+            
             <div className="table">
+            <button onClick={() => setShowInsertForm(!showInsertForm)} className="addBTN">
+              <img src={employIcon} alt="" />
+            </button>
               <table>
                 <thead>
                   <tr>
@@ -223,7 +219,8 @@ const Employees = () => {
                     <th>Apellido</th>
                     <th>Área</th>
                     <th>ID Sede</th>
-                    <th>Acciones</th>
+                    <th>Editar</th>
+                    <th>Eliminar</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -236,113 +233,116 @@ const Employees = () => {
                       <td>{employee.area}</td>
                       <td>{employee.id_sede}</td>
                       <td>
-                        <button
-                          type="submit"
-                          onClick={(e) => EmployessToForm(employee)}
-                        >
+                        <button className="buy-button" id="mp" onClick={() => EmployessToForm(employee)}>
                           Editar
                         </button>
                       </td>
                       <td>
-                        <button
-                          type="submit"
-                          onClick={(e) => deleteEmployees(employee.id_empleado)}
+                        <button className="buy-button" id="mp2"
+                          onClick={() => deleteEmployees(employee.id_empleado)}
                         >
-                          borrar
+                          Borrar
                         </button>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+              <div>
+            
+            {showInsertForm && (
+              <div className="loginForm" id="employ">
+              <h2>Agregar Empleado</h2>
+              <form>
+                <label>
+                  DNI:
+                  <br />
+                  <input
+                    type="text"
+                    name="dni"
+                    value={formData.dni}
+                    onChange={handleChange}
+                    required
+                  />
+                </label>
+                <br />
+                <label>
+                  Nombre:
+                  <br />
+                  <input
+                    type="text"
+                    name="nombre"
+                    value={formData.nombre}
+                    onChange={handleChange}
+                    required
+                  />
+                </label>
+                <br />
+                <label>
+                  Apellido:
+                  <br />
+                  <input
+                    type="text"
+                    name="apellido"
+                    value={formData.apellido}
+                    onChange={handleChange}
+                    required
+                  />
+                </label>
+                <br />
+                <label>
+                  Área:
+                  <br />
+                  <input
+                    type="text"
+                    name="area"
+                    value={formData.area}
+                    onChange={handleChange}
+                    required
+                  />
+                </label>
+                <br />
+                <label>
+                  ID Sede:
+                  <br />
+                  <input
+                    type="number"
+                    name="id_sede"
+                    value={formData.id_sede}
+                    onChange={handleChange}
+                    min="1"
+                    required
+                  />
+                </label>
+                <br />
+                {editBtn ? (
+                  <div>
+                    <button type="submit" onClick={(e) => editEmployees()}>
+                      Editar
+                    </button>
+                    <button
+                      type="submit"
+                      onClick={(e) => {
+                        cancel(e);
+                      }}
+                    >
+                      Cancelar
+                    </button>
+                  </div>
+                ) : (
+                  <button type="submit" onClick={(e) => insertEmployees(e)}>
+                    Agregar
+                  </button>
+                )}
+              </form>
             </div>
+            )}
           </div>
-
-          <div className="form-container">
-            <h2>Agregar Empleado</h2>
-            <form>
-              <label>
-                DNI:
-                <br />
-                <input
-                  type="text"
-                  name="dni"
-                  value={formData.dni}
-                  onChange={handleChange}
-                  required
-                />
-              </label>
-              <br />
-              <label>
-                Nombre:
-                <br />
-                <input
-                  type="text"
-                  name="nombre"
-                  value={formData.nombre}
-                  onChange={handleChange}
-                  required
-                />
-              </label>
-              <br />
-              <label>
-                Apellido:
-                <br />
-                <input
-                  type="text"
-                  name="apellido"
-                  value={formData.apellido}
-                  onChange={handleChange}
-                  required
-                />
-              </label>
-              <br />
-              <label>
-                Área:
-                <br />
-                <input
-                  type="text"
-                  name="area"
-                  value={formData.area}
-                  onChange={handleChange}
-                  required
-                />
-              </label>
-              <br />
-              <label>
-                ID Sede:
-                <br />
-                <input
-                  type="number"
-                  name="id_sede"
-                  value={formData.id_sede}
-                  onChange={handleChange}
-                  min="1"
-                  required
-                />
-              </label>
-              <br />
-              {editBtn ? (
-                <div>
-                  <button type="submit" onClick={(e) => editEmployees()}>
-                    Editar
-                  </button>
-                  <button
-                    type="submit"
-                    onClick={(e) => {
-                      cancel(e);
-                    }}
-                  >
-                    Cancelar
-                  </button>
-                </div>
-              ) : (
-                <button type="submit" onClick={(e) => insertEmployees(e)}>
-                  Agregar
-                </button>
-              )}
-            </form>
+            </div>
+            
           </div>
+         
+          
         </div>
       </div>
     </>
@@ -350,3 +350,6 @@ const Employees = () => {
 };
 
 export default Employees;
+
+
+   ''
