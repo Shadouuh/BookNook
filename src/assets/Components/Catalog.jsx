@@ -4,6 +4,7 @@ import "./Styles/Catalog.css";
 import AddToCart from "./addToCart";
 
 const Catalog = () => {
+  
   // # -----> Mercado Pago Checkout <----- # //
   const createCheckout = async (title, price, imageUrl) => {
     const accessToken =

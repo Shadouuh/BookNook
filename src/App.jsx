@@ -16,6 +16,7 @@ import CartPage from "./assets/Pages/CartPage";
 import Orders from "./assets/Pages/Orders";
 import FormBuy from "./assets/Pages/FormBuy";
 import { Toaster } from "react-hot-toast";
+import './i18n';
 const App = () => {
   return (
     <>

@@ -1,7 +1,7 @@
 import QRCode from "qrcode";
 import { useEffect } from "react";
 const Coupon = () => {
-  const couponURL = "https://www.tienda-bubble-tea.com/descuento";
+  const couponURL = "https://imgur.com/a/zxLqQse";
 
   useEffect(() => {
     // Generar el código QR dentro del canvas

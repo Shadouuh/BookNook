@@ -209,7 +209,7 @@ const Home = () => {
           <h1>¡Prueba nuestro cafe 5 Estrellas!</h1>
           <p className="text"
         >
-            Conoce a <span id="violetSmall">Teresita {"<3"},</span> quien está
+            Conoce a <span id="violetSmall">Teresita,</span> quien está
             disfrutando nuestro nuevo Bubble Tea en la acogedora atmósfera de
             nuestra cafetería en Banfield. ¡Únete a ella y vive la experiencia!
             Aprovecha un 5% de descuento con nuestro cupón especial. Haz clic en

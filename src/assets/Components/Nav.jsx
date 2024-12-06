@@ -16,9 +16,11 @@ const Nav = () => {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isLogged, setIsLogged] = useState(false);
   const [userConfig, setUserConfig] = useState(null);
-  const { i18n } = useTranslation();
-  const changeEnEs = (language) => {
-    i18n.changeLanguage(language);
+  const { t, i18n } = useTranslation();
+
+  const toggleLanguage = () => {
+    const newLanguage = i18n.language === "en" ? "es" : "en";
+    i18n.changeLanguage(newLanguage);
   };
   useEffect(() => {
     const storedUserConfig = localStorage.getItem("userConfig");
@@ -87,9 +89,9 @@ const Nav = () => {
         </div>
 
         <ul>
-          <Link to="/">Home</Link>
+          <Link to="/">Inicio</Link>
           <Link to="/Catalog">Catalogo</Link>
-          <Link to="/About">About Us</Link>
+          <Link to="/About">Nosotros</Link>
         </ul>
         <div className="nav-right">
           <div className="search-container">
@@ -181,7 +183,7 @@ const Nav = () => {
                 src={transIcon}
                 alt=""
                 className="svg-color"
-                onClick={changeEnEs("es")}
+                onClick={() => toggleLanguage()}
               />
               <hr />
             </div>
@@ -189,20 +191,7 @@ const Nav = () => {
               <h4>Español</h4>
             </div>
           </section>
-          <section>
-            <div className="min-sex">
-              <img
-                src={transIcon}
-                alt=""
-                className="svg-color"
-                onClick={changeEnEs("en")}
-              />
-              <hr />
-            </div>
-            <div className="center">
-              <h4>English</h4>
-            </div>
-          </section>
+          
         </div>
       </div>
     </>
