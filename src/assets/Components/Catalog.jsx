@@ -1,17 +1,16 @@
 import { useState, useEffect } from "react";
 import searchIcon from "../Images/Svg/search.svg";
 import "./Styles/Catalog.css";
-import AddToCart from "./addToCart";
+import AddToCart from "./AddToCart";
 
 const Catalog = () => {
-  
   // # -----> Mercado Pago Checkout <----- # //
   const createCheckout = async (title, price, imageUrl) => {
     const accessToken =
-      "APP_USR-3491276126078984-120209-86c0f97353033dd82faa0835a94d5e66-2115182646"; 
+      "APP_USR-3491276126078984-120209-86c0f97353033dd82faa0835a94d5e66-2115182646";
 
-    const validPrice = Number(price) || 0; 
-    const validImageUrl = imageUrl || "default_image_url.jpg"; 
+    const validPrice = Number(price) || 0;
+    const validImageUrl = imageUrl || "default_image_url.jpg";
     const body = {
       items: [
         {
@@ -114,10 +113,9 @@ const Catalog = () => {
       setIsLoading(false);
     } catch (error) {
       console.error("Error al obtener los libros:", error);
-      setIsLoading(false); 
+      setIsLoading(false);
     }
   };
-
 
   useEffect(() => {
     if (searchTerm) {
