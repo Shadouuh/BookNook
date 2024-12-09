@@ -5,7 +5,7 @@ import cartIcon from "../Images/Svg/cart.svg";
 import userIcon from "../Images/Svg/user.svg";
 import logoIcon from "../Images/Svg/logo.svg";
 import { useEffect, useState } from "react";
-import exitIcon from "../Images/Svg/Exit.svg";
+import exitIcon from "../Images/Svg/exit.svg";
 import transIcon from "../Images/Svg/Translate.svg";
 import adminIcon from "../Images/Svg/admin.svg";
 import logTwIcon from "../Images/Svg/loginTwo.svg";
